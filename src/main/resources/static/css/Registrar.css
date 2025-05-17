@@ -1,0 +1,29 @@
+.registrar{
+    background-color: rgb(211, 190, 162);
+}
+.tarjeta1{
+    background-color: rgb(77, 64, 48);
+    color: white;
+}
+.btn.crearse{
+background-color: rgb(148, 132, 110);
+color: white;
+}
+nav.navbar{
+    background-color: rgb(77, 64, 48);
+}
+a.navbar-brand{
+    color: rgb(255, 255, 255);
+}
+a.nav-link{
+    color: rgb(255, 255, 255);
+}
+.fila1{
+    color: rgb(77, 64, 48);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 14px;
+    justify-content: space-between;
+}
+.textoabajo{
+    color: white;
+}

@@ -1,0 +1,77 @@
+
+
+/* Fondo de toda la sección de login */
+.iniciasesion {
+  background-color: rgb(211, 190, 162); /* Color crema de fondo para la sección */
+}
+
+/* Tarjeta del formulario */
+.tarjeta1 {
+  background-color: rgb(77, 64, 48); /* Fondo marrón oscuro para la tarjeta */
+  color: white;                      /* Texto blanco dentro de la tarjeta */       
+  border-radius: 20px;               /* Bordes redondeados */
+  padding: 2rem;                     /* Espacio interno */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra suave para dar profundidad */
+}
+
+/* Botón de ingreso */
+.btn.botoningresar {
+  background-color: rgb(148, 132, 110); /* Color marrón claro para el botón */
+  color: white;                         /* Texto blanco en el botón */
+}
+
+/* Enlace para crear cuenta */
+.acrear {
+  background-color: rgb(148, 132, 110); /* Fondo marrón claro para el enlace */
+}
+
+/* Barra de navegación */
+nav.navbar {
+  background-color: rgb(77, 64, 48); /* Fondo marrón oscuro para el navbar */
+}
+
+/* Estilo para el texto de la marca en la navbar */
+a.navbar-brand {
+  color: white; /* Color blanco para el texto */
+  font-weight: bold;  /* Texto en negrita */
+  font-size: 24px;    /* Tamaño grande */
+}
+
+/* Estilo para los enlaces dentro de la navbar */
+a.nav-link {
+  color: white; /* Color blanco para los enlaces */
+  font-size: 16px;     /* Tamaño de letra medio */
+  margin: 0 10px;      /* Espaciado horizontal entre enlaces */
+  
+}
+
+/* Texto adicional en alguna fila o sección */
+.fila1 {
+  color: rgb(77, 64, 48); /* Texto marrón oscuro */
+  font-family: Verdana, Geneva, Tahoma, sans-serif; /* Tipografías específicas */
+  font-size: 14px;         /* Tamaño de letra pequeño */
+  justify-content: space-between; /* Distribución del contenido con espacio entre elementos */
+}
+
+/* Íconos usados para mostrar validación en formularios */
+.form-check-icon {
+  float: right;       /* Flota a la derecha del contenedor */
+  font-size: 1.2rem;  /* Tamaño ligeramente mayor de la fuente */
+  margin-top: -30px;  /* Margen superior negativo para ajustarlo verticalmente */
+}
+
+/* Color para mensajes o íconos que indican éxito */
+.text-success {
+  color: #198754; /* Verde típico de éxito */
+}
+
+/* Color para mensajes o íconos que indican error */
+.text-error {
+  color: #dc3545; /* Rojo típico de error */
+}
+
+/* Estilo para los campos de formulario que son inválidos */
+input.is-invalid {
+  border-color: #dc3545; /* Borde rojo para destacar error */
+}
+

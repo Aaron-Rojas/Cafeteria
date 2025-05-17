@@ -1,0 +1,236 @@
+body{
+    background-color: rgb(211, 190, 162);
+}
+nav.navbar{
+    background-color: rgb(77, 64, 48);
+}
+a.navbar-brand{
+    color: rgb(255, 255, 255);
+}
+a.nav-link{
+    color: rgb(255, 255, 255);
+}
+.fila1 {
+    background-color: rgb(211, 190, 162);
+    padding: 3rem 1rem;
+  }
+  .fila1 h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    color: rgb(77, 64, 48);
+  }
+  .fila1 p {
+    font-family: 'Open Sans', sans-serif;
+    color: rgb(77, 64, 48);
+    line-height: 1.6;
+  }
+  .fila1 .rounded-circle {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    object-fit: cover;
+    border: 4px solid rgb(77, 64, 48);
+    box-shadow: 0 8px 16px rgb(77, 64, 48);
+  }
+
+.carousel-inner img{
+    width: 1365%;
+    height: 525px;
+    object-fit: fill;
+}
+footer{
+    margin: auto;
+    padding: 18px;
+    justify-content: space-between;
+    background-color: rgb(77, 64, 48);
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: white;
+    text-align: center;
+}
+/* Video responsivo */
+iframe {
+    width: 100%;
+    max-width: 720px;
+    aspect-ratio: 16 / 9;
+    display: block;
+    margin: 0 auto;
+    border: none;
+}
+
+
+
+
+
+:root {
+    --pink-bg: rgb(77, 64, 48);
+    --text-primary: rgb(211, 190, 162);
+    --text-secondary: rgb(211, 190, 162);
+  }
+
+  /* ——————————————————————
+     Sección Café y Más
+     —————————————————————— */
+  #cafe-mas-wrapper section {
+    background-color: var(--pink-bg);
+    padding: 3rem 0;
+  }
+
+  /* Titular principal */
+  #cafe-mas-wrapper h1.display-5 {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--text-primary);
+    font-weight: 700;
+  }
+
+  /* Subtítulo “lead” */
+  #cafe-mas-wrapper .lead {
+    font-family: 'Open Sans', sans-serif;
+    color: var(--text-secondary);
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  /* Párrafos */
+  #cafe-mas-wrapper section p {
+    font-family: 'Open Sans', sans-serif;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* Borde blanco grueso en imágenes */
+  #cafe-mas-wrapper .border-white-thick {
+    border: 6px solid #fff !important;
+  }
+
+  /* Esquinas redondeadas */
+  #cafe-mas-wrapper .rounded {
+    border-radius: 0.5rem !important;
+  }
+
+  /* Espacio extra entre filas */
+  #cafe-mas-wrapper .row.g-4 {
+    margin-top: 2rem;
+  }
+
+  /* Ajustes responsivos */
+  @media (max-width: 576px) {
+    #cafe-mas-wrapper h1.display-5 {
+      font-size: 2rem;
+    }
+    #cafe-mas-wrapper .lead {
+      font-size: 1.1rem;
+    }
+  }
+
+  /* ——————————————————————
+   Imágenes de igual tamaño
+   —————————————————————— */
+#cafe-mas-wrapper .border-white-thick {
+  width: 100%;        /* ocupa todo el ancho de su columna */
+  height: 200px;      /* altura fija para todas */
+  object-fit: cover;  /* recorta y centra para mantener proporción */
+}
+
+
+
+footer {
+  background-color: rgb(77, 64, 48);
+  color: rgb(211, 190, 162);
+  padding: 3rem 0;
+  font-family: 'Open Sans', sans-serif;
+}
+
+footer h5 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+footer a {
+  color: rgb(211, 190, 162);
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: rgb(211, 190, 162);
+}
+
+footer .bi {
+  vertical-align: middle;
+}
+
+footer ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+footer ul li {
+  margin-bottom: 0.5rem;
+}
+
+footer .btn-sm {
+  font-size: 0.875rem;
+  padding: 0.25rem 0.5rem;
+}
+
+@media (max-width: 576px) {
+  footer {
+    padding: 2rem 0;
+  }
+  footer h5 {
+    font-size: 1.1rem;
+  }
+}
+
+/* ——————————————————————
+   Variables para personalizar
+   —————————————————————— */
+.fila2 {
+  /* Color de fondo de la tarjeta */
+  --card-bg-color: rgb(77, 64, 48);
+  /* Color de fondo del botón */
+  --btn-bg-color: rgb(211, 190, 162);
+  /* Color de texto del botón */
+  --btn-text-color: rgb(77, 64, 48);
+  /* Color de fondo del botón al pasar el ratón */
+  --btn-hover-bg: #5a3e2d;
+}
+
+/* ——————————————————————
+   Estilos aplicados solo a .fila2
+   —————————————————————— */
+.fila2 .card {
+  background-color: var(--card-bg-color);
+}
+
+.fila2 .btn-primary {
+  background-color: var(--btn-bg-color);
+  border-color: var(--btn-bg-color);
+  color: var(--btn-text-color);
+  transition: background-color 0.2s ease;
+}
+
+.fila2 .btn-primary:hover,
+.fila2 .btn-primary:focus {
+  background-color: var(--btn-hover-bg);
+  border-color: var(--btn-hover-bg);
+}
+
+/* Opcional: sombra más suave si el fondo de la tarjeta es oscuro */
+.fila2 .card,
+.fila2 .card h5,
+.fila2 .card p {
+  color: rgb(211, 190, 162); /* ajusta texto en tarjeta si cambias fondo */
+}
+
+.mi-sucursal h5 {
+    color: #FF6347;       /* Color personalizado (Tomato) */
+  }
+  .mi-sucursal .nav-link {
+    color: #20B2AA;       /* Color personalizado (LightSeaGreen) */
+    transition: color .2s;
+  }
+  .mi-sucursal .nav-link:hover {
+    color: #2E8B57;       /* Verde más oscuro al hover */
+  }

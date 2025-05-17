@@ -1,0 +1,44 @@
+body{
+    background-color: rgb(211, 190, 162);
+}
+nav.navbar{
+    background-color: rgb(77, 64, 48);
+}
+a.navbar-brand{
+    color: rgb(255, 255, 255);
+}
+a.nav-link{
+    color: rgb(255, 255, 255);
+}
+.fila1{
+    color: rgb(77, 64, 48);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 14px;
+    justify-content: space-between;
+}
+
+
+.carousel-inner img{
+    width: 1365%;
+    height: 525px;
+    object-fit: fill;
+}
+footer{
+    margin: auto;
+    padding: 18px;
+    justify-content: space-between;
+    background-color: rgb(77, 64, 48);
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: white;
+    text-align: center;
+}
+/* Video responsivo */
+iframe {
+    width: 100%;
+    max-width: 720px;
+    aspect-ratio: 16 / 9;
+    display: block;
+    margin: 0 auto;
+    border: none;
+}
+

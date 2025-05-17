@@ -1,0 +1,28 @@
+
+
+
+.colortabla {
+    background-color: rgb(247, 189, 113);
+}
+
+.barranavegacion {
+    font-size: 15px;
+    display: flex; 
+    gap:20px; 
+    background-color: rgb(167, 104, 32);
+    list-style: none;
+     
+}
+
+.barranavegacion li a{
+    color: white;
+    text-decoration: none;
+}
+
+.table-hover tbody tr:hover{
+
+    background-color: aqua;
+}
+
+
+

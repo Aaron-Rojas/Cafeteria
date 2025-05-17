@@ -1,0 +1,12 @@
+body{
+    background-color: rgb(211, 190, 162); /* Color de fondo del body */
+}
+nav.navbar{
+    background-color: rgb(77, 64, 48); /* Color de fondo de la navbar */
+}
+a.navbar-brand{
+     color: rgb(255, 255, 255); /* Color del texto de la marca */
+}
+a.nav-link{
+    color: rgb(255, 255, 255); /* Color del texto de los enlaces */
+}

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Menú | |Amor por el Café</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <link rel='stylesheet' type='text/css' media='screen' href='css/Carta.css'> </head>
+
+<body>
+<header class=" text-white ">
+    <nav class="navbar navbar-expand-sm navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Amor por el Café</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                    aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-between" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link text-white" href="Inicio.html">Inicio</a>
+                    <a class="nav-link text-white" href="/Carta.html">Pedidos</a>
+                    <a class="nav-link text-white" href="/cart">Carrito</a> 
+
+                    <a class="nav-link text-white" href="#">Reservas</a>
+                    <a class="nav-link text-white" href="/SobreNosotros.html">Sobre Nosotros</a>
+                    <a class="nav-link text-white" href="/Eventos.html">Eventos</a>
+                </div>
+
+                <form th:action="@{/Carta.html}" method="get" class="d-flex">
+                    <input type="text" name="searchTerm" class="form-control me-2" placeholder="Buscar..." aria-label="Buscar" th:value="${param.searchTerm}">
+                    <button class="btn btn-outline-light" type="submit">Buscar</button>
+                </form>
+
+                <div class="d-flex gap-3">
+                    <a href="Ingresar.html" class="btn btn-light">Iniciar Sesión</a>
+                    <a href="/registrar" class="btn btn-light">Registrar</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+    <div class="container-fluid">
+        <div class="row g-4 p-5 m-1">
+        <h4>Bebidas</h4>
+        <div th:each="item : ${menuItems}" th:if="${item.categoria == 'Bebida'}" class="col-lg-4 col-md-6">
+            <div class="card"
+                 data-bs-toggle="modal"
+                 data-bs-target="#productModal"
+                 th:data-bs-product-id="${item.id}" 
+                 th:data-bs-product-nombre="${item.nombre}"  
+                 th:data-bs-product-precio="${item.precio}"> 
+                 <img th:src="${item.imagenUrl}" class="card-img-top" th:alt="${item.nombre}">
+                 <div class="card-body">
+                     <h3 class="card-title" th:text="${item.nombre}">Nombre Artículo</h3>
+                     <p class="card-text" th:text="${item.descripcion}">Descripción Artículo</p>
+                     <p class="card-text">
+                          Precio: <span th:text="'S/ ' + ${item.precio}">S/ 0.00</span>
+                     </p>
+                     <a href="#" class="btn btn-dark">Comprar</a> 
+                    </div>
+             </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 p-5 m-1">
+        <h4>Postres</h4>
+        <div th:each="item : ${menuItems}" th:if="${item.categoria == 'Postre'}" class="col-lg-4 col-md-6">
+            <div class="card"
+                 data-bs-toggle="modal"
+                 data-bs-target="#productModal"
+                 th:data-bs-product-id="${item.id}" 
+                 th:data-bs-product-nombre="${item.nombre}"  
+                 th:data-bs-product-precio="${item.precio}"> 
+                 <img th:src="${item.imagenUrl}" class="card-img-top" th:alt="${item.nombre}">
+                 <div class="card-body">
+                     <h3 class="card-title" th:text="${item.nombre}">Nombre Artículo</h3>
+                     <p class="card-text" th:text="${item.descripcion}">Descripción Artículo</p>
+                     <p class="card-text">
+                          Precio: <span th:text="'S/ ' + ${item.precio}">S/ 0.00</span>
+                     </p>
+                     <a href="#" class="btn btn-dark">Comprar</a> 
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row g-4 p-5 m-1">
+        <h4>Combos</h4>
+        <div th:each="item : ${menuItems}" th:if="${item.categoria == 'Combo'}" class="col-lg-4 col-md-6">
+            <div class="card"
+                 data-bs-toggle="modal"
+                 data-bs-target="#productModal"
+                 th:data-bs-product-id="${item.id}" 
+                 th:data-bs-product-nombre="${item.nombre}"  
+                 th:data-bs-product-precio="${item.precio}"> 
+                 <img th:src="${item.imagenUrl}" class="card-img-top" th:alt="${item.nombre}">
+                 <div class="card-body">
+                     <h3 class="card-title" th:text="${item.nombre}">Nombre Artículo</h3>
+                     <p class="card-text" th:text="${item.descripcion}">Descripción Artículo</p>
+                     <p class="card-text">
+                          Precio: <span th:text="'S/ ' + ${item.precio}">S/ 0.00</span>
+                     </p>
+                     <a href="#" class="btn btn-dark">Comprar</a>     
+                </div>
+            </div>            
+        </div>
+    </div>
+<footer>
+    <h4>By Grupo 1 2025</h4>
+    <a href="https://www.whatsapp.com/?lang=es_LA">WhatsApp</a>
+    <a href="https://www.instagram.com/">Instagram</a>
+</footer>
+<div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="productModalLabel">Seleccionar Opciones</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h4 id="modalProductName"></h4>
+        <p>Precio Unitario: S/ <span id="modalProductPrice"></span></p>
+
+        <div class="mb-3">
+            <label class="form-label">Tamaño:</label><br>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="productSize" id="sizeSmall" value="Pequeño" checked>
+                <label class="form-check-label" for="sizeSmall">Pequeño</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="productSize" id="sizeMedium" value="Mediano">
+                <label class="form-check-label" for="sizeMedium">Mediano</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="productSize" id="sizeLarge" value="Grande">
+                <label class="form-check-label" for="sizeLarge">Grande</label>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="productQuantity" class="form-label">Cantidad:</label>
+            <input type="number" class="form-control" id="productQuantity" value="1" min="1">
+        </div>
+
+        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-dark" id="addToCartButton">Añadir al Carrito</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+<script>
+    var productModal = document.getElementById('productModal');
+    productModal.addEventListener('show.bs.modal', function (event) {
+      // Botón o elemento que activó el modal
+      var button = event.relatedTarget;
+
+      // Extraer información de los atributos data-* (usando dataset)
+    
+      var productId = button.dataset.bsProductId;
+      var productName = button.dataset.bsProductNombre;
+      var productPrice = button.dataset.bsProductPrecio;
+
+      // Obtener los elementos del modal donde mostraremos la información
+      var modalTitle = productModal.querySelector('.modal-title');
+      var modalProductName = productModal.querySelector('#modalProductName');
+      var modalProductPrice = productModal.querySelector('#modalProductPrice');
+      var addToCartButton = productModal.querySelector('#addToCartButton');
+
+      // Rellenar el modal con la información del producto
+      modalTitle.textContent = 'Opciones para ' + productName;
+      modalProductName.textContent = productName; // Mostrar el nombre más grande dentro del cuerpo
+      modalProductPrice.textContent = parseFloat(productPrice).toFixed(2); // Mostrar precio formateado
+
+      // Opcional: Guardar el ID del producto en el botón "Añadir al Carrito" para usarlo después
+      addToCartButton.dataset.productId = productId;
+      // También puedes guardar el precio y nombre si los necesitas para la lógica de añadir al carrito
+      addToCartButton.dataset.productPrice = productPrice;
+      addToCartButton.dataset.productName = productName;
+
+      // Restablecer cantidad a 1 y tamaño predeterminado (si aplica) cada vez que se abre el modal
+      document.getElementById('productQuantity').value = 1;
+      document.getElementById('sizeSmall').checked = true; // O el tamaño que quieras por defecto  
+    });
+
+    var addToCartButton = document.getElementById('addToCartButton');
+
+    addToCartButton.addEventListener('click', function() {
+    // 1. Obtener la información del producto guardada en el botón "Añadir al Carrito"
+    var productId = this.dataset.productId;
+    var productName = this.dataset.productName;
+    var productPrice = this.dataset.productPrice;
+
+    // 2. Obtener el tamaño seleccionado
+    var selectedSizeElement = document.querySelector('input[name="productSize"]:checked');
+    var selectedSize = selectedSizeElement ? selectedSizeElement.value : null; // Si no se selecciona tamaño, es null
+
+    // 3. Obtener la cantidad seleccionada
+    var quantityElement = document.getElementById('productQuantity');
+    var selectedQuantity = parseInt(quantityElement.value); // Convertir a número entero
+
+    // Validar que se obtuvo la información necesaria
+    if (!productId || !selectedQuantity || selectedQuantity <= 0) {
+        alert('Por favor, selecciona un producto y una cantidad válida.');
+        return; // Detener el proceso si falta información
+    }
+
+  //En este punto, tenemos toda la información del ítem seleccionado: ***
+    console.log('Producto Seleccionado:', {
+         id: productId,
+         nombre: productName,
+         precio: productPrice, 
+         tamaño: selectedSize,
+         cantidad: selectedQuantity
+     });
+     
+
+    var modal = bootstrap.Modal.getInstance(document.getElementById('productModal')); // Obtener la instancia del modal
+
+    // *** 4. ENVIAR ESTOS DATOS AL SERVIDOR USANDO FETCH (una forma moderna de hacer peticiones AJAX) ***
+    // Define los datos a enviar
+    var data = new URLSearchParams(); // Usamos URLSearchParams para enviar datos como form-urlencoded
+    data.append('productId', productId);
+    data.append('size', selectedSize);
+    data.append('quantity', selectedQuantity);
+
+    // Configura la petición POST al endpoint /cart/add
+    fetch('/cart/add', {
+        method: 'POST',
+        body: data // El cuerpo de la petición son los datos que preparamos
+    })
+    .then(response => {
+        // Verifica si la respuesta fue exitosa (código 200-299)
+        if (!response.ok) {
+            // Si hubo un error (ej. 404 si el producto no existe), lanza un error
+            // response.text() lee el cuerpo de la respuesta como texto
+            return response.text().then(text => { throw new Error('Error en la respuesta del servidor: ' + response.status + ' ' + response.statusText + ' - ' + text) });
+        }
+        // Si la respuesta fue exitosa, puedes leer el cuerpo (si el servidor envía algo)
+        return response.text(); // O response.json() si el servidor responde con JSON
+    })
+    .then(result => {
+        // Aquí manejas la respuesta exitosa del servidor
+        console.log('Éxito:', result); // Muestra el mensaje de éxito del controlador en la consola
+        alert('¡Producto "' + productName + '" añadido al carrito!'); // Alerta de éxito visible para el usuario
+
+        // 5. Cerrar el modal después de añadir
+        var modal = bootstrap.Modal.getInstance(document.getElementById('productModal'));
+        if (modal) {
+            modal.hide();
+        }
+    })
+    .catch(error => {
+        // Aquí manejas cualquier error que ocurra durante la petición
+        console.error('Error al añadir al carrito:', error);
+        alert('Hubo un error al añadir el producto al carrito.'); // Alerta de error para el usuario
+    });
+    
+});
+</script>
+</body>
+</html>
