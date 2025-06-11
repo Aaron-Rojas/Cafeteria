@@ -1,4 +1,4 @@
-package com.cafeteria.demo.controller; // Asegúrate de que el paquete sea correcto
+package com.cafeteria.demo.controller; 
 
 import java.util.List;
 
@@ -9,14 +9,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
 
 import com.cafeteria.demo.model.MenuItem;
+import com.cafeteria.demo.model.Producto;
 import com.cafeteria.demo.service.MenuService;
 import com.cafeteria.demo.model.User;
+
 @Controller // Con esta anotación, Spring Boot reconoce esta clase como un Controlador
-public class controller {
+public class HomeController {
 
     @Autowired // Le dice a Spring que inyecte una instancia de MenuService aquí
-    private MenuService menuService; // Los otros métodos para páginas estáticas pueden quedarse igual si los
-                                     // necesitas
+     // Los otros métodos para páginas estáticas pueden quedarse igual los necesitas
+    private final MenuService menuService;
+
+    // Inyección de dependencias a través del constructor
+    public HomeController(MenuService menuService) {
+        this.menuService = menuService;
+    }                                     
 
     // Este método manejará las peticiones GET a la URL raíz ("/")
     @GetMapping("/")
@@ -26,30 +33,29 @@ public class controller {
         return "inicio";
     }
 
-    // Maneja la URL "/Menu.html" y muestra Menu.html
-    @GetMapping("/Carta.html")
-    public String showMenuPage(Model model, @RequestParam(value = "searchTerm", required = false) String searchTerm) { // <--
-                                                                                                                       // Añadimos
-                                                                                                                       // este
-                                                                                                                       // parámetro
-        List<MenuItem> menuItems;
-        // Si se proporcionó un término de búsqueda, usar el método de búsqueda del
-        // servicio
+
+    // Maneja las URLs "/Carta.html" y "/menu" para mostrar el menú principal
+    // Hemos añadido "/menu" para que sea una URL más limpia, pero /Carta.html también funcionará.
+    @GetMapping({"/Carta.html", "/menu"}) 
+    public String showMenuPage(Model model, @RequestParam(value = "searchTerm", required = false) String searchTerm) {
+        List<Producto> productos; 
+
+        // Si se proporcionó un término de búsqueda, usar el método de búsqueda del servicio
         if (searchTerm != null && !searchTerm.trim().isEmpty()) {
-            menuItems = menuService.searchMenuItems(searchTerm); // <-- Usamos tu método existente
-            // Opcional: añadir el término de búsqueda al modelo para mostrarlo en la página
-            model.addAttribute("searchTerm", searchTerm);
+            productos = menuService.buscarProductosPorNombre(searchTerm); // <-- Usamos el nuevo método
+            // Añadimos el término de búsqueda al modelo para que la caja de texto lo recuerde
+            model.addAttribute("searchTerm", searchTerm); 
         } else {
-            // Si no hay término de búsqueda, obtener todos los ítems
-            menuItems = menuService.getAllMenuItems(); // <-- Usamos tu método existente (o searchMenuItems(null))
+            // Si no hay término de búsqueda, obtener todos los productos
+            productos = menuService.obtenerTodosLosProductos(); // <-- Usamos el nuevo método
         }
 
-        // Añadir la lista de ítems (filtrada o completa) al Model
-        model.addAttribute("menuItems", menuItems);
+        // Añadir la lista de productos (filtrada o completa) al Model
+        // ¡Importante: el nombre del atributo es "productos", como lo espera tu Cartas.html!
+        model.addAttribute("productos", productos); 
 
-        // Retornar el nombre de la plantilla
-        return "Carta"; // Busca Carta.html en templates
-    }
+        return "Carta";
+        }
 
     // Maneja la URL "/SobreNosotros.html" y muestra SobreNosotros.html
     @GetMapping("/SobreNosotros.html")

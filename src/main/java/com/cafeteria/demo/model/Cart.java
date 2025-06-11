@@ -1,73 +1,53 @@
 package com.cafeteria.demo.model;
 
-import com.cafeteria.demo.model.CartItem;
-
-
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.Optional; // Para usar Optional si buscas ítems
 
+public class Cart implements Serializable { // Implementar Serializable es bueno para la sesión
 
-public class Cart {
-    
-    private List<CartItem> items; // Lista de ítems en el carrito
-    private Double total; // Precio total de todos los ítems
+    private List<CartItem> items;
+    private double total;
 
-    // Constructor
     public Cart() {
         this.items = new ArrayList<>();
         this.total = 0.0;
     }
 
-    // Método para añadir un ítem al carrito
-    public void addItem(CartItem item) {
-        // Implementar lógica: si el ítem ya existe (mismo producto y tamaño),
-        // simplemente incrementa la cantidad. Si no, añade un nuevo ítem.
-        boolean itemExists = false;
-        for (CartItem existingItem : items) {
-            // Lógica simple de comparación: mismo producto (por ID) y mismo tamaño
-            if (existingItem.getProduct().getId().equals(item.getProduct().getId()) &&
-                existingItem.getSelectedSize().equals(item.getSelectedSize())) {
-                existingItem.setQuantity(existingItem.getQuantity() + item.getQuantity());
-                itemExists = true;
-                break; // Salir del bucle una vez que encontramos y actualizamos el ítem
-            }
-        }
-
-        if (!itemExists) {
-            this.items.add(item); // Si el ítem no existía, añadirlo como uno nuevo
-        }
-
-        recalculateTotal(); // Recalcular el total después de añadir/actualizar
-    }
-
-    // Método para recalcular el total del carrito sumando los subtotales de los ítems
-    public void recalculateTotal() {
-        this.total = 0.0;
-        for (CartItem item : items) {
-            this.total += item.getSubtotal();
-        }
-    }
-
-    // Método para obtener los ítems del carrito
     public List<CartItem> getItems() {
         return items;
     }
 
-    // Método para obtener el total del carrito
-    public Double getTotal() {
+    public double getTotal() {
         return total;
     }
 
-    // Puedes añadir métodos adicionales como removeItem(Long productId), updateItemQuantity(Long productId, int newQuantity), clearCart(), etc.
+    // Método para añadir un ítem al carrito o actualizar su cantidad
+    public void addItem(CartItem newItem) {
+        // Busca si el ítem (mismo producto y tamaño) ya existe en el carrito
+        Optional<CartItem> existingItem = items.stream()
+            .filter(item -> item.getProduct().getId().equals(newItem.getProduct().getId()) &&
+                             item.getSelectedSize().equals(newItem.getSelectedSize()))
+            .findFirst();
 
-    // Opcional: toString() para depuración
-    @Override
-    public String toString() {
-        return "Cart{" +
-               "items=" + items.size() +
-               ", total=" + total +
-               '}';
+        if (existingItem.isPresent()) {
+            // Si el ítem ya existe, actualiza su cantidad
+            existingItem.get().setQuantity(existingItem.get().getQuantity() + newItem.getQuantity());
+        } else {
+            // Si el ítem no existe, añádelo a la lista
+            items.add(newItem);
+        }
+        recalculateTotal(); // Recalcula el total después de añadir
     }
+
+    // Método para recalcular el total del carrito
+    public void recalculateTotal() {
+        this.total = items.stream()
+                .mapToDouble(CartItem::getSubtotal) // Usa el método getSubtotal de CartItem
+                .sum();
+    }
+
+    // Puedes añadir métodos para eliminar ítems, vaciar el carrito, etc.
+    // (Tu CartController ya tiene un método para eliminar)
 }

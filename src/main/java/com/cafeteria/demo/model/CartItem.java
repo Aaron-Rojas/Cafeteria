@@ -1,29 +1,29 @@
 package com.cafeteria.demo.model;
 
-import com.cafeteria.demo.model.MenuItem;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.math.BigDecimal;
 
+// importar la clase Producto!
+import com.cafeteria.demo.model.Producto; // o el paquete donde esté tu Producto.java
 
 public class CartItem {
+    // El ítem de menú ahora será de tipo Producto
+    private Producto product;
+    private String selectedSize;
+    private int quantity;
 
-    private MenuItem product; // El producto del menú
-    private String selectedSize; // Tamaño seleccionado (Pequeño, Mediano, Grande)
-    private int quantity; // Cantidad seleccionada
-    private Double subtotal; // Precio total de este ítem (precio unitario * cantidad)
-
-    public CartItem(){
-
-    }
-
-    public CartItem(MenuItem product, String selectedSize, int quantity) {
+    // Constructor que acepta un objeto Producto
+    public CartItem(Producto product, String selectedSize, int quantity) {
         this.product = product;
         this.selectedSize = selectedSize;
         this.quantity = quantity;
-        this.subtotal = product.getPrecio()* quantity;
     }
 
-    public MenuItem getProduct() {
+    // Constructor vacío
+    public CartItem() {
+    }
+
+    // Getters
+    public Producto getProduct() {
         return product;
     }
 
@@ -35,35 +35,54 @@ public class CartItem {
         return quantity;
     }
 
-    public Double getSubtotal() {
-        return subtotal;
+    // Setters 
+    public void setProduct(Producto product) {
+        this.product = product;
     }
-
 
     public void setSelectedSize(String selectedSize) {
-         this.selectedSize = selectedSize;
-         // Si el tamaño impacta el precio, recalcular subtotal aquí.
+        this.selectedSize = selectedSize;
     }
+
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-        this.subtotal = this.product.getPrecio() * quantity; // Recalcular subtotal
+    }
+    // Método corregido para calcular el subtotal
+    public double getSubtotal() {
+        // Multiplicar BigDecimal por un int
+        // Primero convertimos la cantidad a BigDecimal para la operación
+        BigDecimal totalBigDecimal = product.getPrecio().multiply(BigDecimal.valueOf(quantity));
+        
+        // Luego, convertimos el resultado a double, ya que getSubtotal() devuelve double
+        return totalBigDecimal.doubleValue();
     }
 
-    // Opcional: Método para recalcular subtotal si algo cambia (ej. el precio del producto)
-    public void recalculateSubtotal() {
-        this.subtotal = this.product.getPrecio() * this.quantity;
-    }
 
-
-    // Opcional: toString() para depuración
     @Override
     public String toString() {
         return "CartItem{" +
-               "product=" + product.getNombre() +
+               "product=" + product.getNombre() + // Solo mostramos el nombre del producto para evitar bucles infinitos con toString()
                ", selectedSize='" + selectedSize + '\'' +
                ", quantity=" + quantity +
-               ", subtotal=" + subtotal +
+               ", subtotal=" + getSubtotal() +
                '}';
     }
 
+    // Opcional: Si quieres que los ítems con el mismo producto y tamaño se "sumen" en el carrito
+    // Puedes implementar equals y hashCode para la comparación
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CartItem cartItem = (CartItem) o;
+        // Compara por ID del producto y tamaño seleccionado
+        return product.getId().equals(cartItem.product.getId()) &&
+               selectedSize.equals(cartItem.selectedSize);
+    }
+
+    @Override
+    public int hashCode() {
+        // Genera un hash basado en el ID del producto y el tamaño
+        return java.util.Objects.hash(product.getId(), selectedSize);
+    }
 }
