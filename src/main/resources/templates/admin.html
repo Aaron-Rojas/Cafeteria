@@ -39,15 +39,21 @@
       <th scope="col">Apellidos</th>
       <th scope="col">Correo</th>
       <th scope="col">Teléfono</th>
+      <th scope="col">Fecha</th>
+      <th scope="col">Hora</th>
+
     </tr>
   </thead>
   <tbody>
-    <tr  th:each = "reserva:${listaReservas}">
-      <th scope="row" th:text="${reserva.id}" > </th>
-      <td th:text="${reserva.nombre}"> </td>
-      <td th:text="${reserva.apellido}"> </td>
+    <tr  th:each ="reserva: ${listaReservas}">
+      <th scope="row" th:text="${reserva.id}"></th>
+      <td th:text="${reserva.nombres}"></td>
+      <td th:text="${reserva.apellidos}"></td>
       <td th:text="${reserva.correo}"></td>
       <td th:text="${reserva.telefono}"></td>
+      <td th:text="${#temporals.format(reserva.fecha, 'dd/MM/yyyy')}"></td>
+      <td th:text="${#temporals.format(reserva.horareserva, 'hh:mm a')}"></td>
+
     </tr>
   </tbody>
 </table>

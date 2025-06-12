@@ -16,9 +16,10 @@ public class AdministradorController {
     @Autowired
     private ReservaService reservaService;
 
-    @GetMapping("/adminReservas")
+    @GetMapping("/admin/reservas")
     public String mostrarReservas(Model model) {
         List<Reserva> reservas = reservaService.obtenerTodasLasReservas();
+         System.out.println("Reservas: " + reservas);
         model.addAttribute("listaReservas", reservas);
         return "admin"; // Este sería tu archivo admin.html
     }
