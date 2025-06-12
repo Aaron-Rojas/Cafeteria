@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -16,13 +17,21 @@ public class AdministradorController {
     @Autowired
     private ReservaService reservaService;
 
-    @GetMapping("/admin/reservas")
-    public String mostrarReservas(Model model) {
-        List<Reserva> reservas = reservaService.obtenerTodasLasReservas();
-         System.out.println("Reservas: " + reservas);
-        model.addAttribute("listaReservas", reservas);
-        return "admin"; // Este sería tu archivo admin.html
-    }
+   @GetMapping("/admin")
+public String mostrarReservas(Model model) {
+    List<Reserva> reservas = reservaService.obtenerTodasLasReservas();
+    System.out.println("📦 Total reservas encontradas: " + reservas.size());
+    reservas.forEach(System.out::println);
 
-    
+    model.addAttribute("listaReservas", reservas);
+    return "admin";
+}
+
+@GetMapping("/debug")
+@ResponseBody
+public List<Reserva> debugReservas() {
+    return reservaService.obtenerTodasLasReservas();
+}
+
+
 }

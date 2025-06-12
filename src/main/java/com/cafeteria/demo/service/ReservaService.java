@@ -21,11 +21,11 @@ public class ReservaService {
         reservaRepository.save(reserva);
     }
 
-    public void eliminarReserva(int id) {
+    public void eliminarReserva(Long id) { // CORREGIDO: int → Long
         reservaRepository.deleteById(id);
     }
 
-    public Reserva obtenerReservaPorId(int id) {
+    public Reserva obtenerReservaPorId(Long id) { // CORREGIDO: int → Long
         return reservaRepository.findById(id).orElse(null);
     }
 }

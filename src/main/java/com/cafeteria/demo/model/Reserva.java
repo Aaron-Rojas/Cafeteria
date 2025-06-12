@@ -1,61 +1,73 @@
 package com.cafeteria.demo.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "reservas")
 public class Reserva {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    private String nombres;
-    private String apellidos;
-    private String correo;
-    private String telefono;
-    private LocalDate fecha;
-    private LocalTime horareserva;
-
-    // Constructores
-    public Reserva() {} // Obligatorio para JPA
-
-    public Reserva(int id, String nombre, String apellido, String correo, LocalDate fecha, LocalTime horareserva, String telefono) {
-        this.id = id;
-        this.nombres = nombre;
-        this.apellidos = apellido;
-        this.correo = correo;
-        this.telefono = telefono;
-        this.fecha = fecha;
-        this.horareserva = horareserva;
+    public enum EstadoReserva {
+        Pendiente,
+        Confirmada,
+        Cancelada,
+        Completada
     }
 
-    // Getters y setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public String getNombres() { return nombres; }
-    public void setNombres(String nombres) { this.nombres = nombres; }
+    @Column(name = "usuario_id")
+    private Long usuarioId;
 
-    public String getApellidos() { return apellidos; }
-    public void setApellidos(String apellidos) { this.apellidos = apellidos; }
+    @Column(name = "mesa_id")
+    private Long mesaId;
 
-    public String getCorreo() { return correo; }
-    public void setCorreo(String correo) { this.correo = correo; }
+    @Column(name = "fecha_hora_reserva")
+    private LocalDateTime fechaHoraReserva;
 
-    public String getTelefono() { return telefono; }
-    public void setTelefono(String telefono) { this.telefono = telefono; }
+    @Column(name = "duracion_minutos")
+    private int duracionMinutos;
 
-    public LocalDate getFecha() { return fecha; }
-    public void setFecha(LocalDate fecha) { this.fecha = fecha; }
+    @Column(name = "cantidad_personas")
+    private int cantidadPersonas;
 
-    public LocalTime getHorareserva() { return horareserva; }
-    public void setHorareserva(LocalTime horareserva) { this.horareserva = horareserva; }
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado")
+    private EstadoReserva estado;
+
+    @Column(name = "notas")
+    private String notas;
+
+    public Reserva() {}
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public Long getUsuarioId() { return usuarioId; }
+    public void setUsuarioId(Long usuarioId) { this.usuarioId = usuarioId; }
+
+    public Long getMesaId() { return mesaId; }
+    public void setMesaId(Long mesaId) { this.mesaId = mesaId; }
+
+    public LocalDateTime getFechaHoraReserva() { return fechaHoraReserva; }
+    public void setFechaHoraReserva(LocalDateTime fechaHoraReserva) { this.fechaHoraReserva = fechaHoraReserva; }
+
+    public int getDuracionMinutos() { return duracionMinutos; }
+    public void setDuracionMinutos(int duracionMinutos) { this.duracionMinutos = duracionMinutos; }
+
+    public int getCantidadPersonas() { return cantidadPersonas; }
+    public void setCantidadPersonas(int cantidadPersonas) { this.cantidadPersonas = cantidadPersonas; }
+
+    public EstadoReserva getEstado() { return estado; }
+    public void setEstado(EstadoReserva estado) { this.estado = estado; }
+
+    public String getNotas() { return notas; }
+    public void setNotas(String notas) { this.notas = notas; }
 
     @Override
     public String toString() {
-        return id + ": " + nombres + " " + apellidos + ", " + correo + ", " + telefono;
+        return "Reserva #" + id + " [" + fechaHoraReserva + "] - Estado: " + estado;
     }
 }
