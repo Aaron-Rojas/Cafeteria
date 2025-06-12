@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.time.LocalDate; 
+import java.time.LocalDate;
+import org.springframework.web.bind.annotation.RequestParam;
+ 
 
 
 
@@ -33,6 +35,5 @@ public class AdministradorController {
         // Mostrar la vista "reservas.html"
         return "admin";
     }
-     
 
 }
