@@ -1,11 +1,31 @@
 package com.cafeteria.demo.service;
 
-//import java.util.ArrayList;
-//import java.util.List;
-//import java.util.Optional; // Importar Optional
-//import java.util.stream.Collectors; 
+import com.cafeteria.demo.model.Reserva;
+import com.cafeteria.demo.repository.ReservaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
 
+@Service
 public class ReservaService {
-    
+
+    @Autowired
+    private ReservaRepository reservaRepository;
+
+    public List<Reserva> obtenerTodasLasReservas() {
+        return reservaRepository.findAll();
+    }
+
+    public void guardarReserva(Reserva reserva) {
+        reservaRepository.save(reserva);
+    }
+
+    public void eliminarReserva(int id) {
+        reservaRepository.deleteById(id);
+    }
+
+    public Reserva obtenerReservaPorId(int id) {
+        return reservaRepository.findById(id).orElse(null);
+    }
 }
