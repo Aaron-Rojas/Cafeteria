@@ -20,9 +20,9 @@ public class AdministradorController {
    @GetMapping("/admin")
 public String mostrarReservas(Model model) {
     List<Reserva> reservas = reservaService.obtenerTodasLasReservas();
-    System.out.println("📦 Total reservas encontradas: " + reservas.size());
+    System.out.println("Total reservas encontradas: " + reservas.size());
     reservas.forEach(System.out::println);
-
+    model.addAttribute("reservaForm", new Reserva()); // 🔥 evita errores Thymeleaf
     model.addAttribute("listaReservas", reservas);
     return "admin";
 }
