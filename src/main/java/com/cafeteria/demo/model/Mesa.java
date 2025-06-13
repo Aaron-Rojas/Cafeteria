@@ -6,14 +6,6 @@ import jakarta.persistence.*;
 @Table(name = "mesas")
 public class Mesa {
 
-    @ManyToOne
-    @JoinColumn(name = "mesa_id") // asegúrate de que coincida con tu base de datos
-    private Mesa mesa;
-
-    // Getter y Setter
-    public Mesa getMesa() { return mesa; }
-    public void setMesa(Mesa mesa) { this.mesa = mesa; }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,7 +28,6 @@ public class Mesa {
         Mantenimiento
     }
 
-    // Getters y setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -57,4 +48,3 @@ public class Mesa {
         return "Mesa #" + numeroMesa + " (" + capacidad + " personas, Estado: " + estado + ")";
     }
 }
-

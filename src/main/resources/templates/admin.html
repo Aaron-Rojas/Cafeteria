@@ -90,26 +90,27 @@
             </thead>
             <tbody>
             <tr th:each="reserva : ${listaReservas}">
-                <td th:text="${reserva.id}"></td>
-                <td th:text="${reserva.usuarioId}"></td>
-                <td th:text="${reserva.mesaId}"></td>
-                <td th:text="${#temporals.format(reserva.fechaHoraReserva, 'dd/MM/yyyy HH:mm')}"></td>
-                <td th:text="${reserva.duracionMinutos}"></td>
-                <td th:text="${reserva.cantidadPersonas}"></td>
-                <td>
-                    <span th:text="${reserva.estado}"
-                          th:classappend="'badge ' +
-                            (${reserva.estado.name() == 'Confirmada'} ? 'bg-success' :
-                            (${reserva.estado.name() == 'Pendiente'} ? 'bg-warning text-dark' :
-                            (${reserva.estado.name() == 'Cancelada'} ? 'bg-danger' : 'bg-secondary')))">
-                    </span>
-                </td>
-                <td th:text="${reserva.notas}"></td>
-                <td>
-                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#reservaModal">Editar</button>
-                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#eliminarModal">Eliminar</button>
-                </td>
-            </tr>
+    <td th:text="${reserva.id}"></td>
+    <td th:text="${reserva.usuarioId}"></td>
+    <td th:text="${reserva.mesa.numeroMesa}"></td> <!-- ✅ AHORA SÍ -->
+    <td th:text="${#temporals.format(reserva.fechaHoraReserva, 'dd/MM/yyyy HH:mm')}"></td>
+    <td th:text="${reserva.duracionMinutos}"></td>
+    <td th:text="${reserva.cantidadPersonas}"></td>
+    <td>
+        <span th:text="${reserva.estado}"
+              th:classappend="'badge ' +
+                (${reserva.estado.name() == 'Confirmada'} ? 'bg-success' :
+                (${reserva.estado.name() == 'Pendiente'} ? 'bg-warning text-dark' :
+                (${reserva.estado.name() == 'Cancelada'} ? 'bg-danger' : 'bg-secondary')))">
+        </span>
+    </td>
+    <td th:text="${reserva.notas}"></td>
+    <td>
+        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#reservaModal">Editar</button>
+        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#eliminarModal">Eliminar</button>
+    </td>
+</tr>
+
             </tbody>
         </table>
     </div>
