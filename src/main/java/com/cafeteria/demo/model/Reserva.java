@@ -3,6 +3,8 @@ package com.cafeteria.demo.model;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "reservas")
 public class Reserva {
@@ -23,8 +25,9 @@ public class Reserva {
 
     @ManyToOne
     @JoinColumn(name = "mesa_id") // Clave foránea
+      @JsonIgnoreProperties({"reservas"}) // Evita recursión
     private Mesa mesa;
-
+   
     @Column(name = "fecha_hora_reserva")
     private LocalDateTime fechaHoraReserva;
 

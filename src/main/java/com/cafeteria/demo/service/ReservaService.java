@@ -5,6 +5,7 @@ import com.cafeteria.demo.model.Reserva;
 import com.cafeteria.demo.repository.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional; 
 
 import java.util.List;
 
@@ -15,22 +16,31 @@ public class ReservaService {
     private ReservaRepository reservaRepository;
 
     @Autowired
-    private MesaService mesaService; // o usa MesaRepository directamente si no tienes servicio
-
-
+    private MesaService mesaService;
+    
+     // **Nuevo**: traer todas las reservas
+    @Transactional(readOnly = true)
     public List<Reserva> obtenerTodasLasReservas() {
         return reservaRepository.findAll();
     }
 
+    @Transactional
     public void guardarReserva(Reserva reserva) {
+        // Primero guarda la reserva
         reservaRepository.save(reserva);
+        
+        // Luego actualiza el estado de la mesa SOLO si es necesario
         if (reserva.getEstado() == Reserva.EstadoReserva.Confirmada && reserva.getMesa() != null) {
-        Mesa mesa = reserva.getMesa();
-        mesa.setEstado(Mesa.EstadoMesa.Ocupada);
-        mesaService.guardarMesa(mesa);
+            // Recargar la mesa para evitar problemas de contexto de persistencia
+            Mesa mesaActualizada = mesaService.obtenerMesaPorId(reserva.getMesa().getId());
+            
+            if(mesaActualizada != null) {
+                mesaActualizada.setEstado(Mesa.EstadoMesa.Ocupada);
+                mesaService.actualizarMesa(mesaActualizada);
+            }
+        }
     }
-
-    }
+    
 
     public void eliminarReserva(Long id) { // CORREGIDO: int → Long
         reservaRepository.deleteById(id);
