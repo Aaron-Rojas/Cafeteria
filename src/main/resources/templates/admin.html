@@ -89,7 +89,8 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="reserva : ${listaReservas}">
+            <tr th:each="reserva : ${listaReservas}" th:object="${reserva}">
+
     <td th:text="${reserva.id}"></td>
     <td th:text="${reserva.usuarioId}"></td>
     <td th:text="${reserva.mesa.numeroMesa}"></td> <!-- ✅ AHORA SÍ -->
@@ -107,7 +108,13 @@
     <td th:text="${reserva.notas}"></td>
     <td>
         <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#reservaModal">Editar</button>
-        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#eliminarModal">Eliminar</button>
+        <form th:action="@{/admin/reserva/eliminar}" method="post" th:object="${reserva}">
+        <input type="hidden" name="id" th:value="${reserva.id}" />
+        <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+        </form>
+
+
+    
     </td>
 </tr>
 
