@@ -1,47 +1,190 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Reserva Cliente</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reservar | Amor por el Café</title>
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.4/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-DQvkBjpPgn7RC31MCQoOeC9TI2kdqa4+BSgNMNj8v77fdC77Kj5zpWFTJaaAoMbC"
+    crossorigin="anonymous"
+  >
+  <!-- Tu CSS personalizado -->
+  <link href="/css/Inicio1.css" rel="stylesheet">
 </head>
-<body class="container mt-5">
+<body>
 
-    <h2>Reservar una mesa</h2>
+  <!-- ========== NAVBAR ========== -->
+  <header class="text-white">
+    <nav class="navbar navbar-expand-sm navbar-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">Amor por el Café</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavAltMarkup"
+          aria-controls="navbarNavAltMarkup"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="collapse navbar-collapse justify-content-between"
+          id="navbarNavAltMarkup"
+        >
+          <div class="navbar-nav">
+            <a class="nav-link text-white" href="/">Inicio</a>
+            <a class="nav-link text-white" href="/carta">Pedidos</a>
+            <a class="nav-link text-white" href="/cart">Carrito</a>
+            <a class="nav-link text-white" href="/reserva/form">Reservas</a>
+            <a class="nav-link text-white" href="/sobre-nosotros">Sobre Nosotros</a>
+            <a class="nav-link text-white" href="/eventos">Eventos</a>
+          </div>
+          <div class="d-flex gap-3">
+            <a href="/login" class="btn btn-light">Iniciar Sesión</a>
+            <a href="/registrar" class="btn btn-light">Registrar</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ========== CONTENIDO: FORMULARIO RESERVA ========== -->
+  <main class="container mt-5">
+
+    <h2 class="mb-4">Reservar una mesa</h2>
+
+    <!-- mensaje de éxito -->
+    <div th:if="${success}" class="alert alert-success">
+      ¡Tu reserva se ha guardado correctamente!
+    </div>
 
     <form th:action="@{/reserva/guardar}" method="post">
-        <div class="mb-3">
-            <label>Usuario ID</label>
-            <input type="number" name="usuarioId" class="form-control" required>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label for="usuarioId" class="form-label">Usuario ID</label>
+          <input
+            type="number"
+            id="usuarioId"
+            name="usuarioId"
+            class="form-control"
+            required
+          >
         </div>
-
-        <div class="mb-3">
-            <label>ID de Mesa</label>
-            <input type="number" name="mesaId" class="form-control" required>
+        <div class="col-md-6">
+          <label for="mesaId" class="form-label">Mesa</label>
+          <select
+            id="mesaId"
+            name="mesaId"
+            class="form-select"
+            required
+          >
+            <option
+              th:each="mesa : ${mesas}"
+              th:value="${mesa.id}"
+              th:text="'Mesa ' + ${mesa.numeroMesa} + ' (capacidad: ' + ${mesa.capacidad} + ')'"
+            ></option>
+          </select>
         </div>
-
-        <div class="mb-3">
-            <label>Fecha y Hora</label>
-            <input type="datetime-local" name="fechaHoraReserva" class="form-control" required>
+        <div class="col-md-6">
+          <label for="fechaHoraReserva" class="form-label">Fecha y Hora</label>
+          <input
+            type="datetime-local"
+            id="fechaHoraReserva"
+            name="fechaHoraReserva"
+            class="form-control"
+            required
+          >
         </div>
-
-        <div class="mb-3">
-            <label>Duración (minutos)</label>
-            <input type="number" name="duracionMinutos" class="form-control" required>
+        <div class="col-md-3">
+          <label for="duracionMinutos" class="form-label">Duración (min)</label>
+          <input
+            type="number"
+            id="duracionMinutos"
+            name="duracionMinutos"
+            class="form-control"
+            required
+          >
         </div>
-
-        <div class="mb-3">
-            <label>Cantidad de Personas</label>
-            <input type="number" name="cantidadPersonas" class="form-control" required>
+        <div class="col-md-3">
+          <label for="cantidadPersonas" class="form-label">Personas</label>
+          <input
+            type="number"
+            id="cantidadPersonas"
+            name="cantidadPersonas"
+            class="form-control"
+            required
+          >
         </div>
-
-        <div class="mb-3">
-            <label>Notas adicionales</label>
-            <textarea name="notas" class="form-control"></textarea>
+        <div class="col-12">
+          <label for="notas" class="form-label">Notas adicionales</label>
+          <textarea
+            id="notas"
+            name="notas"
+            class="form-control"
+            rows="3"
+          ></textarea>
         </div>
+      </div>
 
+      <div class="mt-4">
         <button type="submit" class="btn btn-success">Enviar Reserva</button>
+      </div>
     </form>
 
+  </main>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="pt-5 pb-4">
+    <div class="container">
+      <div class="row g-4">
+        <!-- Sucursales -->
+        <div class="col-md-4">
+          <h5 class="mb-3"><i class="bi bi-geo-alt-fill me-1"></i> Nuestras sucursales</h5>
+          <nav class="nav flex-column">
+            <a class="nav-link px-0" href="#">Miraflores</a>
+            <a class="nav-link px-0" href="#">Barranco</a>
+            <a class="nav-link px-0" href="#">San Isidro</a>
+          </nav>
+        </div>
+        <!-- Contacto -->
+        <div class="col-md-4">
+          <h5 class="mb-3"><i class="bi bi-telephone-fill me-1"></i> Atención al cliente</h5>
+          <ul class="list-unstyled mb-0">
+            <li class="mb-2">
+              <i class="bi bi-phone me-1"></i>
+              <a href="tel:+51112345678" class="text-decoration-underline">(01) 123 4567</a>
+            </li>
+            <li class="mb-2">
+              <i class="bi bi-whatsapp me-1"></i>
+              <a href="https://wa.me/51123456789" class="text-decoration-underline">WhatsApp</a>
+            </li>
+            <li>
+              <i class="bi bi-envelope-fill me-1"></i>
+              <a href="mailto:info@cafeymas.com" class="text-decoration-underline">info@cafeymas.com</a>
+            </li>
+          </ul>
+        </div>
+        <!-- Horarios -->
+        <div class="col-md-4">
+          <h5 class="mb-3"><i class="bi bi-clock-fill me-1"></i> Horario de atención</h5>
+          <p class="mb-1"><strong>Lun – Vie:</strong> 7:00 a.m. – 10:00 p.m.</p>
+          <p class="mb-3"><strong>Sáb – Dom:</strong> 8:00 a.m. – 8:00 p.m.</p>
+          <p class="small mb-0">© 2025 Café y Más SAC</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.4/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YUe2LzesAfftltw+PEaao2tjU/QATaW/rOitAq67e0CT0Zi2VVRL0oC4+gAaeBKu"
+    crossorigin="anonymous"
+  ></script>
 </body>
 </html>
