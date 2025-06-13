@@ -21,8 +21,9 @@ public class Reserva {
     @Column(name = "usuario_id")
     private Long usuarioId;
 
-    @Column(name = "mesa_id")
-    private Long mesaId;
+    @ManyToOne
+    @JoinColumn(name = "mesa_id") // Clave foránea
+    private Mesa mesa;
 
     @Column(name = "fecha_hora_reserva")
     private LocalDateTime fechaHoraReserva;
@@ -48,8 +49,8 @@ public class Reserva {
     public Long getUsuarioId() { return usuarioId; }
     public void setUsuarioId(Long usuarioId) { this.usuarioId = usuarioId; }
 
-    public Long getMesaId() { return mesaId; }
-    public void setMesaId(Long mesaId) { this.mesaId = mesaId; }
+    public Mesa getMesa() { return mesa; }
+    public void setMesa(Mesa mesa) { this.mesa = mesa; }
 
     public LocalDateTime getFechaHoraReserva() { return fechaHoraReserva; }
     public void setFechaHoraReserva(LocalDateTime fechaHoraReserva) { this.fechaHoraReserva = fechaHoraReserva; }
