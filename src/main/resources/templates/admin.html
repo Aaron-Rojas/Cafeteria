@@ -109,7 +109,7 @@
     <td>
         <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#reservaModal">Editar</button>
         <form th:action="@{/admin/reserva/eliminar}" method="post" th:object="${reserva}">
-        <input type="hidden" name="id" th:value="${reserva.id}" />
+            <input type="hidden" name="id" th:value="${reserva.id}" />
         <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
         </form>
 
