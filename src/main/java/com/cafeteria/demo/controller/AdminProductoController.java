@@ -71,7 +71,7 @@ private ProductoAdminService productoAdminService;
         if (producto.getId() == null) {
             // Si el ID es null, es un nuevo producto
             System.out.println("--- DEBUG AdminProductoController: Creando nuevo producto ---");
-            // ¡Línea corregida aquí!
+            
             productoAdminService.guardarProductoConSP(producto); 
 
             redirectAttributes.addFlashAttribute("mensaje", "Producto agregado exitosamente!");
