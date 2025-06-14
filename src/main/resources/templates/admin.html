@@ -18,7 +18,6 @@
     <header>
         <nav >
             <ul class="barranavegacion p-2">
-                <li class="ms-1"><a href=""> Gestión de Reservas</a></li>
                 <li class="ms-1"><a th:href="@{/admin/productos}" >Gestión de Productos </a></li>
                 <li class="ms-1"><a href="">Gestión de Eventos</a></li>
                 <li class="ms-1"><a class="flex-sm-fill text-sm-center nav-link" th:href="@{/admin/usuarios}">Gestión de Usuarios</a></li>
@@ -28,43 +27,159 @@
     </div>
     
      <h1 class="m-4">Bienvenido</h1>
+     <h2 class="ms-4 ps-3"> Gestion de reserva </h2>
      <h2 class="ms-4 ps-3"> Registro de reservas </h2>
 
-     <div class=" m-4 p-2 table-responsive">
-     <table class="table table-striped table-hover table-bordered text-center m-2 ">
-  <thead class="table-dark">
-    <tr class="colortabla">
-      <th scope="col"># Reserva</th>
-      <th scope="col">Nombres</th>
-      <th scope="col">Apellidos</th>
-      <th scope="col">Correo</th>
-      <th scope="col">Teléfono</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr  th:each = "reserva:${listaReservas}">
-      <th scope="row" th:text="${reserva.id}" > </th>
-      <td th:text="${reserva.nombre}"> </td>
-      <td th:text="${reserva.apellido}"> </td>
-      <td th:text="${reserva.correo}"></td>
-      <td th:text="${reserva.telefono}"></td>
+      <div th:if="${listaMesas == null}" class="ms-4">
+        <p>No hay mesas disponibles</p>
+    </div>
+
+    <div th:if="${listaMesas != null}" class="m-4 p-2 table-responsive">
+        <h5 th:text="'Mesas registradas: ' + ${listaMesas.size()}"></h5>
+
+        <table class="table table-striped table-hover table-bordered text-center">
+            <thead class="table-dark">
+            <tr>
+                <th>Nº Mesa</th>
+                <th>Capacidad</th>
+                <th>Estado</th>
+                <th>Descripción</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="mesa : ${listaMesas}">
+                <td th:text="${mesa.numeroMesa}"></td>
+                <td th:text="${mesa.capacidad}"></td>
+                <td>
+                    <span th:text="${mesa.estado}"
+                          th:classappend="'badge ' +
+                            (${mesa.estado == 'Disponible'} ? 'bg-success' :
+                            (${mesa.estado == 'Ocupada'} ? 'bg-danger' : 'bg-warning text-dark'))">
+                    </span>
+                </td>
+                <td th:text="${mesa.descripcion}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- REGISTRO DE RESERVAS DEBAJO -->
+    <h2 class="ms-4 ps-3"> Registro de reservas </h2>
+
+    <div th:if="${listaReservas == null}">
+        <h3>Lista null? true</h3>
+        <p>No hay datos disponibles</p>
+    </div>
+
+    <div th:if="${listaReservas != null}" class="m-4 p-2 table-responsive">
+        <h5 th:text="'Reservas encontradas: ' + ${listaReservas.size()}"></h5>
+
+        <table class="table table-striped table-hover table-bordered text-center m-2">
+            <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Usuario</th>
+                <th>Mesa</th>
+                <th>Fecha</th>
+                <th>Duración</th>
+                <th>Personas</th>
+                <th>Estado</th>
+                <th>Notas</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="reserva : ${listaReservas}" th:object="${reserva}">
+
+    <td th:text="${reserva.id}"></td>
+    <td th:text="${reserva.usuarioId}"></td>
+    <td th:text="${reserva.mesa.numeroMesa}"></td> <!-- ✅ AHORA SÍ -->
+    <td th:text="${#temporals.format(reserva.fechaHoraReserva, 'dd/MM/yyyy HH:mm')}"></td>
+    <td th:text="${reserva.duracionMinutos}"></td>
+    <td th:text="${reserva.cantidadPersonas}"></td>
+    <td>
+        <span th:text="${reserva.estado}"
+              th:classappend="'badge ' +
+                (${reserva.estado.name() == 'Confirmada'} ? 'bg-success' :
+                (${reserva.estado.name() == 'Pendiente'} ? 'bg-warning text-dark' :
+                (${reserva.estado.name() == 'Cancelada'} ? 'bg-danger' : 'bg-secondary')))">
+        </span>
+    </td>
+    <td th:text="${reserva.notas}"></td>
+    <td>
+        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#reservaModal">Editar</button>
+        <form th:action="@{/admin/reserva/eliminar}" method="post" th:object="${reserva}">
+            <input type="hidden" name="id" th:value="${reserva.id}" />
+        <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+        </form>
+
+
     
-  </tbody>
-</table>
- </div>
+    </td>
+</tr>
 
- <div class="ms-4 p-3">
-<button class="btn btn-dark" type="submit">Añadir</button>
-<button class="btn btn-dark" type="submit">Editar</button>
-<button class="btn btn-dark" type="submit">Eliminar</button>
+            </tbody>
+        </table>
+    </div>
 
+    <div class="mt-4 ms-4">
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#reservaModal">
+            Añadir Nueva Reserva
+        </button>
+    </div>
 
-
-
-</div>
-
-
-   </div>
-
+    <!-- MODAL RESERVA -->
+    <div class="modal fade" id="reservaModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <form th:action="@{/admin/reserva/guardar}" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Formulario de Reserva</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label>Usuario ID</label>
+                            <input type="number" name="usuarioId" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label>Mesa ID</label>
+                            <input type="number" name="mesaId" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label>Fecha y hora</label>
+                            <input type="datetime-local" name="fechaHoraReserva" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label>Duración (min)</label>
+                            <input type="number" name="duracionMinutos" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label>Personas</label>
+                            <input type="number" name="cantidadPersonas" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label>Estado</label>
+                            <select name="estado" class="form-control" required>
+                                <option value="Confirmada">Confirmada</option>
+                                <option value="Pendiente">Pendiente</option>
+                                <option value="Cancelada">Cancelada</option>
+                                <option value="Completada">Completada</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label>Notas</label>
+                            <textarea name="notas" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>  
 </body>
 </html>
