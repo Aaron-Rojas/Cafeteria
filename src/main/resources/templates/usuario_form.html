@@ -1,0 +1,57 @@
+<!-- Archivo: src/main/resources/templates/usuario_form.html -->
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title th:text="${user.usuarioid == null ? 'Crear Usuario' : 'Editar Usuario'}"></title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <!-- Tu CSS de admin si lo tienes -->
+    <!-- <link rel='stylesheet' type='text/css' media='screen' th:href="@{/css/admin.css}"> -->
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4" th:text="${user.usuarioid == null ? 'Crear Nuevo Usuario' : 'Editar Usuario'}"></h2>
+
+        <form th:action="@{/admin/usuarios/guardar}" th:object="${user}" method="post">
+            <!-- Campo oculto para el ID del usuario (importante para saber si es nuevo o edición) -->
+            <input type="hidden" th:field="*{usuarioid}" />
+
+            <div class="mb-3">
+                <label for="username" class="form-label">Nombre de Usuario:</label>
+                <input type="text" class="form-control" id="username" th:field="*{username}" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email:</label>
+                <input type="email" class="form-control" id="email" th:field="*{email}" required>
+            </div>
+            
+            <!-- Campo de Contraseña - SOLO para CREAR NUEVO USUARIO -->
+            <div class="mb-3" th:if="${user.usuarioid == null}">
+                <label for="password" class="form-label">Contraseña:</label>
+                <input type="password" class="form-control" id="password" th:field="*{password}" required>
+                <small class="form-text text-muted">La contraseña solo se puede establecer al crear un nuevo usuario.</small>
+            </div>
+
+            <!-- Campo de Rol (si el admin lo gestiona, si no, se maneja en el servicio) -->
+            <!-- Por simplicidad, si el rol lo asigna el servicio por el email, este campo no es estrictamente necesario en el form.
+                 Pero si el admin puede seleccionar el rol, lo incluiríamos así: -->
+            <!-- <div class="mb-3">
+                <label for="rolusuario" class="form-label">Rol:</label>
+                <select class="form-select" id="rolusuario" th:field="*{rolusuario}" required>
+                    <option value="">Seleccione un rol</option>
+                    <option value="1">Administrador</option>
+                    <option value="2">Cliente</option>
+                </select>
+            </div> -->
+
+            <button type="submit" class="btn btn-success me-2">Guardar Usuario</button>
+            <a th:href="@{/admin/usuarios}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+</body>
+</html>
