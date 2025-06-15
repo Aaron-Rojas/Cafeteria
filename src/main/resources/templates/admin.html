@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -6,65 +5,295 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Panel de Administrador</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='/css/admin.css'>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
-    <script src='main.js'></script>
+    
+    <!-- CSS personalizado (usando th:href para que Spring lo resuelva) -->
+    <link rel='stylesheet' type='text/css' media='screen' th:href="@{/css/admin.css}">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+    
+    <!-- Script de Bootstrap (debe ir al final del body para mejor rendimiento) -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script> -->
+    
+    <!-- Tu script JS principal (usando th:src) -->
+    <!-- <script src='main.js'></script> -->
 </head>
 <body>
 
     <div class="container-fluid p-0 m-0">
-    <div class="col-12">
-    <header>
-        <nav >
-            <ul class="barranavegacion p-2">
-                <li class="ms-1"><a href=""> Gestión de Reservas</a></li>
-                <li class="ms-1"><a th:href="@{/admin/productos}" >Gestión de Productos </a></li>
-                <li class="ms-1"><a href="">Gestión de Eventos</a></li>
-                <li class="ms-1"><a class="flex-sm-fill text-sm-center nav-link" th:href="@{/admin/usuarios}">Gestión de Usuarios</a></li>
-            </ul>
-        </nav>
-    </header>
-    </div>
+        <div class="col-12">
+            <header>
+                <nav >
+                    <ul class="barranavegacion p-2">
+                        <!-- Enlaces de navegación con th:href para que Spring los resuelva -->
+                        <li class="ms-1"><a class="flex-sm-fill text-sm-center nav-link" th:href="@{/admin}">Gestión de Reservas</a></li>
+                        <li class="ms-1"><a class="flex-sm-fill text-sm-center nav-link" th:href="@{/admin/productos}" >Gestión de Productos </a></li>
+                        <li class="ms-1"><a class="flex-sm-fill text-sm-center nav-link" th:href="@{/Eventos.html}">Gestión de Eventos</a></li> <!-- Asumiendo Eventos.html estático o un controlador /eventos -->
+                        <li class="ms-1"><a class="flex-sm-fill text-sm-center nav-link" th:href="@{/admin/usuarios}">Gestión de Usuarios</a></li>
+                    </ul>
+                </nav>
+            </header>
+        </div>
+        
+        <h1 class="m-4">Bienvenido al Panel de Administración</h1>
+
+        <!-- Mensajes de éxito/error (Flash Attributes) -->
+        <div th:if="${mensaje}" class="alert alert-success alert-dismissible fade show mx-4" role="alert">
+            <p th:text="${mensaje}"></p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show mx-4" role="alert">
+            <p th:text="${error}"></p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <!-- SECCIÓN: ESTADO DE MESAS -->
+        <h2 class="ms-4 ps-3">Estado de Mesas</h2>
+
+        <div th:if="${listaMesas == null or listaMesas.isEmpty()}" class="ms-4">
+            <p>No hay mesas registradas en el sistema.</p>
+        </div>
+
+        <div th:if="${listaMesas != null and !listaMesas.isEmpty()}" class="m-4 p-2 table-responsive">
+            <h5 th:text="'Mesas registradas: ' + ${listaMesas.size()}"></h5>
+
+            <table class="table table-striped table-hover table-bordered text-center">
+                <thead class="table-dark">
+                <tr>
+                    <th>ID</th> <!-- Añadido ID de mesa -->
+                    <th>Nº Mesa</th>
+                    <th>Capacidad</th>
+                    <th>Estado</th>
+                    <th>Descripción</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="mesa : ${listaMesas}">
+                    <td th:text="${mesa.id}"></td> <!-- Mostrar ID de mesa -->
+                    <td th:text="${mesa.numeroMesa}"></td>
+                    <td th:text="${mesa.capacidad}"></td>
+                    <td>
+                        <span th:text="${mesa.estado}"
+                              th:classappend="'badge ' + 
+                                (${mesa.estado.name() == 'Disponible'} ? 'bg-success' :
+                                (${mesa.estado.name() == 'Ocupada'} ? 'bg-danger' : 'bg-warning text-dark'))">
+                        </span>
+                    </td>
+                    <td th:text="${mesa.descripcion}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- SECCIÓN: REGISTRO DE RESERVAS -->
+        <h2 class="ms-4 ps-3">Registro de Reservas</h2>
+
+        <div th:if="${listaReservas == null or listaReservas.isEmpty()}" class="ms-4">
+            <p>No hay reservas registradas.</p>
+        </div>
+
+        <div th:if="${listaReservas != null and !listaReservas.isEmpty()}" class="m-4 p-2 table-responsive">
+            <h5 th:text="'Reservas encontradas: ' + ${listaReservas.size()}"></h5>
+
+            <table class="table table-striped table-hover table-bordered text-center m-2">
+                <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Usuario ID</th>
+                    <th>Mesa</th>
+                    <th>Fecha y Hora</th>
+                    <th>Duración (min)</th>
+                    <th>Personas</th>
+                    <th>Estado</th>
+                    <th>Notas</th>
+                    <th>Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="reserva : ${listaReservas}" th:object="${reserva}">
+                    <td th:text="${reserva.id}"></td>
+                    <td th:text="${reserva.usuarioId}"></td>
+                    <td th:text="${reserva.mesa?.numeroMesa ?: 'N/A'}"></td> <!-- Manejo de null con '?:' -->
+                    <td th:text="${#temporals.format(reserva.fechaHoraReserva, 'dd/MM/yyyy HH:mm')}"></td>
+                    <td th:text="${reserva.duracionMinutos}"></td>
+                    <td th:text="${reserva.cantidadPersonas}"></td>
+                    <td>
+                        <span th:text="${reserva.estado}"
+                              th:classappend="'badge ' + 
+                                (${reserva.estado.name() == 'Confirmada'} ? 'bg-success' :
+                                (${reserva.estado.name() == 'Pendiente'} ? 'bg-warning text-dark' :
+                                (${reserva.estado.name() == 'Cancelada'} ? 'bg-danger' : 'bg-secondary')))">
+                        </span>
+                    </td>
+                    <td th:text="${reserva.notas}"></td>
+                    <td>
+                        <!-- Botón Editar: Usar data attributes para pasar la información al modal -->
+                        <button type="button" class="btn btn-sm btn-primary editar-reserva-btn"
+                                th:data-id="${reserva.id}"
+                                th:data-usuarioid="${reserva.usuarioId}"
+                                th:data-mesaid="${reserva.mesa?.id}"
+                                th:data-fechahora="${#temporals.format(reserva.fechaHoraReserva, 'yyyy-MM-dd''T''HH:mm')}"
+                                th:data-duracion="${reserva.duracionMinutos}"
+                                th:data-personas="${reserva.cantidadPersonas}"
+                                th:data-estado="${reserva.estado.name()}"
+                                th:data-notas="${reserva.notas}"
+                                data-bs-toggle="modal" data-bs-target="#reservaModal">
+                            Editar
+                        </button>
+                        <!-- Formulario para Eliminar (POST para seguridad) -->
+                        <form th:action="@{/admin/reserva/eliminar}" method="post" style="display:inline;">
+                            <input type="hidden" name="id" th:value="${reserva.id}" />
+                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de que quieres eliminar esta reserva?');">
+                                Eliminar
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="mt-4 ms-4 mb-5">
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#reservaModal" id="addReservaBtn">
+                Añadir Nueva Reserva
+            </button>
+        </div>
+
+    </div> <!-- Fin container-fluid -->
+
+    <!-- MODAL PARA AÑADIR/EDITAR RESERVA -->
+    <div class="modal fade" id="reservaModal" tabindex="-1" aria-labelledby="reservaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <!-- El action del formulario será dinámico, por defecto será para guardar nuevo -->
+                <form id="reservaFormModal" th:action="@{/admin/reserva/guardar}" method="post" th:object="${reservaForm}">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="reservaModalLabel">Formulario de Reserva</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Campo ID oculto para edición -->
+                        <input type="hidden" id="reservaId" name="id" th:field="*{id}" />
+
+                        <div class="mb-3">
+                            <label for="modalUsuarioId" class="form-label">Usuario ID</label>
+                            <input type="number" id="modalUsuarioId" name="usuarioId" th:field="*{usuarioId}" class="form-control" required>
+                            <small class="form-text text-muted">Ingresa el ID del usuario. (Temporal)</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="modalMesaId" class="form-label">Mesa</label>
+                            <select id="modalMesaId" name="mesaId" th:field="*{mesa}" class="form-select" required>
+                                <option value="">Seleccione una mesa</option>
+                                <option th:each="mesa : ${listaMesas}"
+                                        th:value="${mesa.id}"
+                                        th:text="'Mesa #' + ${mesa.numeroMesa} + ' (Capacidad: ' + ${mesa.capacidad} + ')'"
+                                        th:selected="${reservaForm.mesa != null and reservaForm.mesa.id == mesa.id}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="modalFechaHoraReserva" class="form-label">Fecha y Hora</label>
+                            <input type="datetime-local" id="modalFechaHoraReserva" name="fechaHoraReserva" th:field="*{fechaHoraReserva}" 
+                                   th:value="${reservaForm.fechaHoraReserva != null ? #temporals.format(reservaForm.fechaHoraReserva, 'yyyy-MM-dd''T''HH:mm') : ''}"
+                                   class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="modalDuracionMinutos" class="form-label">Duración (min)</label>
+                            <input type="number" id="modalDuracionMinutos" name="duracionMinutos" th:field="*{duracionMinutos}" class="form-control" required min="15" step="15">
+                        </div>
+                        <div class="mb-3">
+                            <label for="modalCantidadPersonas" class="form-label">Personas</label>
+                            <input type="number" id="modalCantidadPersonas" name="cantidadPersonas" th:field="*{cantidadPersonas}" class="form-control" required min="1">
+                        </div>
+                        <div class="mb-3">
+                            <label for="modalEstado" class="form-label">Estado</label>
+                            <select id="modalEstado" name="estado" th:field="*{estado}" class="form-select" required>
+                                <option th:each="estadoEnum : ${T(com.cafeteria.demo.model.Reserva.EstadoReserva).values()}"
+                                        th:value="${estadoEnum.name()}"
+                                        th:text="${estadoEnum.name()}"
+                                        th:selected="${reservaForm.estado != null and reservaForm.estado.name() == estadoEnum.name()}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="modalNotas" class="form-label">Notas</label>
+                            <textarea id="modalNotas" name="notas" th:field="*{notas}" class="form-control" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div> <!-- Fin MODAL -->
+
+    <!-- Bootstrap JS (al final del body es una buena práctica) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
     
-     <h1 class="m-4">Bienvenido</h1>
-     <h2 class="ms-4 ps-3"> Registro de reservas </h2>
+    <!-- Script personalizado para manejar el modal de edición/adición -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const reservaModal = document.getElementById('reservaModal');
+            const addReservaBtn = document.getElementById('addReservaBtn');
+            const reservaFormModal = document.getElementById('reservaFormModal');
+            const modalTitle = document.getElementById('reservaModalLabel');
 
-     <div class=" m-4 p-2 table-responsive">
-     <table class="table table-striped table-hover table-bordered text-center m-2 ">
-  <thead class="table-dark">
-    <tr class="colortabla">
-      <th scope="col"># Reserva</th>
-      <th scope="col">Nombres</th>
-      <th scope="col">Apellidos</th>
-      <th scope="col">Correo</th>
-      <th scope="col">Teléfono</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr  th:each = "reserva:${listaReservas}">
-      <th scope="row" th:text="${reserva.id}" > </th>
-      <td th:text="${reserva.nombre}"> </td>
-      <td th:text="${reserva.apellido}"> </td>
-      <td th:text="${reserva.correo}"></td>
-      <td th:text="${reserva.telefono}"></td>
-    
-  </tbody>
-</table>
- </div>
+            // Inputs del modal
+            const reservaIdInput = document.getElementById('reservaId');
+            const usuarioIdInput = document.getElementById('modalUsuarioId');
+            const mesaIdSelect = document.getElementById('modalMesaId');
+            const fechaHoraReservaInput = document.getElementById('modalFechaHoraReserva');
+            const duracionMinutosInput = document.getElementById('modalDuracionMinutos');
+            const cantidadPersonasInput = document.getElementById('modalCantidadPersonas');
+            const estadoSelect = document.getElementById('modalEstado');
+            const notasTextarea = document.getElementById('modalNotas');
 
- <div class="ms-4 p-3">
-<button class="btn btn-dark" type="submit">Añadir</button>
-<button class="btn btn-dark" type="submit">Editar</button>
-<button class="btn btn-dark" type="submit">Eliminar</button>
+            // Escuchar el evento para cuando se abre el modal (añadir nueva reserva)
+            addReservaBtn.addEventListener('click', function() {
+                modalTitle.textContent = 'Añadir Nueva Reserva';
+                reservaFormModal.action = '/admin/reserva/guardar'; // Asegura la URL para añadir
+                // Limpiar el formulario
+                reservaIdInput.value = '';
+                usuarioIdInput.value = '';
+                mesaIdSelect.value = ''; // Vaciar select
+                fechaHoraReservaInput.value = '';
+                duracionMinutosInput.value = '';
+                cantidadPersonasInput.value = '';
+                estadoSelect.value = 'Pendiente'; // Estado por defecto para nuevas reservas
+                notasTextarea.value = '';
+            });
 
+            // Escuchar clics en los botones "Editar" de la tabla
+            document.querySelectorAll('.editar-reserva-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    modalTitle.textContent = 'Editar Reserva';
+                    reservaFormModal.action = '/admin/reserva/guardar'; // Mismo endpoint para guardar/actualizar
+                    
+                    // Rellenar el formulario del modal con los datos de la fila
+                    reservaIdInput.value = this.dataset.id;
+                    usuarioIdInput.value = this.dataset.usuarioid;
+                    mesaIdSelect.value = this.dataset.mesaid;
+                    fechaHoraReservaInput.value = this.dataset.fechahora;
+                    duracionMinutosInput.value = this.dataset.duracion;
+                    cantidadPersonasInput.value = this.dataset.personas;
+                    estadoSelect.value = this.dataset.estado;
+                    notasTextarea.value = this.dataset.notas;
+                });
+            });
 
+            // Opcional: Manejar el evento 'hidden.bs.modal' para limpiar el formulario al cerrar
+            reservaModal.addEventListener('hidden.bs.modal', function () {
+                reservaFormModal.reset(); // Resetea todos los campos del formulario
+                reservaIdInput.value = ''; // Asegura que el ID oculto también se limpie
+            });
+        });
 
-
-</div>
-
-
-   </div>
-
+        // Función para confirmar eliminación
+        function confirmDelete() {
+            return confirm('¿Estás seguro de que quieres eliminar esta reserva?');
+        }
+    </script>
 </body>
 </html>

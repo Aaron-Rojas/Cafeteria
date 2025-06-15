@@ -3,7 +3,7 @@ package com.cafeteria.demo.controller;
 import com.cafeteria.demo.model.Cart; // Tu clase Carrito 
 import com.cafeteria.demo.model.CartItem; // Tu clase Ítem del Carrito
 import com.cafeteria.demo.model.Producto; // Ahora usamos Producto, no MenuItem!
-import com.cafeteria.demo.service.MenuService; // Tu MenuService actualizado para usar la BD
+import com.cafeteria.demo.service.ProductoService; // Tu MenuService actualizado para usar la BD
 
 import jakarta.servlet.http.HttpSession; // Para gestionar la sesión del usuario
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ import java.util.Optional; // Para manejar el resultado de búsquedas
 public class CartController {
 
     @Autowired
-    private MenuService menuService; // Inyecta el servicio de menú
+    private ProductoService menuService; // Inyecta el servicio de menú
 
     // Endpoint para añadir un ítem al carrito
     @PostMapping("/add") // Mapea las peticiones POST a /cart/add a este método

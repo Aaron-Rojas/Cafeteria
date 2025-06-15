@@ -18,10 +18,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/usuario")
 public class UsuarioController {
 
-    @Autowired
-    private UserService usuarioservicio;
+    private final UserService usuarioservicio;
 
-    @GetMapping("/nuevousuario")
+    @Autowired
+    public UsuarioController (UserService usuarioservicio){
+        this.usuarioservicio=usuarioservicio;
+    }
+
+    // --- MÉTODOS DE REGISTRO ---
+
+    @GetMapping("/nuevousuario") //Muestra el formulario
     public String mostrarregistronuevo(Model model) {
         System.out.println("--- DEBUG UsuarioController: Entrando a mostrarregistronuevo ---");
         model.addAttribute("user", new User());
@@ -29,19 +35,18 @@ public class UsuarioController {
         return "Registrar";
     }
 
-    @PostMapping("/registrarusuario")
+
+    @PostMapping("/registrarusuario") // Procesa el formulario de registro
     public String registrarusuarios(@ModelAttribute User user, RedirectAttributes redirectat) {
         System.out.println("--- DEBUG UsuarioController: Entrando a registrarusuarios ---");
         System.out.println("--- DEBUG UsuarioController: Usuario recibido: " + user.getEmail() + " ---");
-        
         try {
             usuarioservicio.registrausuarios(user);
             redirectat.addFlashAttribute("mensaje", "Usuario registrado exitosamente!");
 
-            if (user.getEmail().toLowerCase().startsWith("admin")) {
+            if (user.getEmail().toLowerCase().startsWith("admin")) /*si el correo inicia con Admin*/ { 
                 System.out.println("--- DEBUG UsuarioController: Redirigiendo admin a /adminReservas ---");
-                // ¡CORREGIDO! Redirige directamente a la URL del admin.html
-                return "redirect:/adminReservas"; // URL del controlador de AdministradorController para admin.html
+                return "redirect:/admin"; // URL del controlador de AdministradorController para admin.html
             } else {
                 System.out.println("--- DEBUG UsuarioController: Redirigiendo cliente a / ---");
                 return "redirect:/"; // Redirige a la página principal para clientes
@@ -78,7 +83,7 @@ public class UsuarioController {
 
             if (loggedInUser.getRolusuario() == 1L) { // Asumiendo 1L para rol de administrador
                 System.out.println("--- DEBUG UsuarioController: Redirigiendo administrador a /adminReservas ---");
-                return "redirect:/adminReservas"; // Redirige al panel de administración
+                return "redirect:/admin"; // Redirige al panel de administración
             } else {
                 System.out.println("--- DEBUG UsuarioController: Redirigiendo usuario normal a / ---");
                 return "redirect:/"; // Redirige a la página principal para usuarios normales

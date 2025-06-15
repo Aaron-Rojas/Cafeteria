@@ -20,16 +20,15 @@
             <span class="navbar-toggler-icon"></span>
           </button>
           
-          <div class="collapse navbar-collapse justify-content-between" id="navbarNavAltMarkup">
-            <!-- Enlaces de navegación -->
-            <div class="navbar-nav">
-              <a class="nav-link text-white" href="Inicio.html">Inicio</a>
-              <a class="nav-link text-white" href="Carta.html">Pedidos</a>
-              <a class="nav-link text-white" href="/cart">Carrito</a> 
-              <a class="nav-link text-white" href="#">Reservas</a>
-              <a class="nav-link text-white" href="SobreNosotros.html">Sobre Nosotros</a>
-              <a class="nav-link text-white" href="Eventos.html">Eventos</a>
-            </div>
+        <div class="collapse navbar-collapse justify-content-between" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+                    <a class="nav-link text-white" th:href="@{/Inicio.html}">Inicio</a> 
+                    <a class="nav-link text-white" th:href="@{/Carta.html}">Pedidos</a> 
+                    <a class="nav-link text-white" th:href="@{/cart}">Carrito</a> 
+                    <a  class="nav-link text-white"th:href="@{/reserva/form}">Reservar Mesa</a> 
+                    <a class="nav-link text-white" th:href="@{/SobreNosotros.html}">Sobre Nosotros</a>
+                    <a class="nav-link text-white" th:href="@{/Eventos.html}">Eventos</a> 
+          </div>
             
             <!-- Botones a la derecha -->
 <div class="d-flex gap-3">

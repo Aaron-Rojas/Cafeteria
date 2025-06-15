@@ -10,7 +10,7 @@ import org.springframework.ui.Model;
 
 import com.cafeteria.demo.model.MenuItem;
 import com.cafeteria.demo.model.Producto;
-import com.cafeteria.demo.service.MenuService;
+import com.cafeteria.demo.service.ProductoService;
 import com.cafeteria.demo.model.User;
 
 @Controller // Con esta anotación, Spring Boot reconoce esta clase como un Controlador
@@ -18,10 +18,10 @@ public class HomeController {
 
     @Autowired // Le dice a Spring que inyecte una instancia de MenuService aquí
      // Los otros métodos para páginas estáticas pueden quedarse igual los necesitas
-    private final MenuService menuService;
+    private final ProductoService menuService;
 
     // Inyección de dependencias a través del constructor
-    public HomeController(MenuService menuService) {
+    public HomeController(ProductoService menuService) {
         this.menuService = menuService;
     }                                     
 
