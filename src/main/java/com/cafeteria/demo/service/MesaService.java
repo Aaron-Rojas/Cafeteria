@@ -6,13 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 import java.util.List;
 
 @Service
 public class MesaService {
 
-    @Autowired
-    private MesaRepository mesaRepository;
+    private final MesaRepository mesaRepository;
+    @Autowired // Inyección por constructor
+    public MesaService(MesaRepository mesaRepository) {
+        this.mesaRepository = mesaRepository;
+    }
+
 
     @Transactional(readOnly = true)
     public List<Mesa> obtenerTodasLasMesas() {
@@ -20,12 +26,17 @@ public class MesaService {
     }
 
     @Transactional(readOnly = true)
-    public Mesa obtenerMesaPorId(Long id) {
-        return mesaRepository.findById(id).orElse(null);
+    public Optional <Mesa> obtenerMesaPorId(Long id) {
+        return mesaRepository.findById(id);
     }
 
     @Transactional
-    public void actualizarMesa(Mesa mesa) {
-        mesaRepository.save(mesa);
+    public Mesa guardarMesa(Mesa mesa) { // Cambiar nombre a 'guardarMesa' y retornar la mesa guardada
+        return mesaRepository.save(mesa);
+    }
+
+    @Transactional
+    public void eliminarMesa(Long id) { // Añadir método de eliminación
+    mesaRepository.deleteById(id);
     }
 }

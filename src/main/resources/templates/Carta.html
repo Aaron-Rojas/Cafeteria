@@ -1,4 +1,3 @@
-<!-- Archivo: src/main/resources/templates/Carta.html -->
 
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
@@ -22,15 +21,15 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div class="collapse navbar-collapse justify-content-between" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    <a class="nav-link text-white" th:href="@{/Inicio.html}">Inicio</a>
-                    <a class="nav-link text-white" th:href="@{/Carta.html}">Pedidos</a>
+        <div class="collapse navbar-collapse justify-content-between" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+                    <a class="nav-link text-white" th:href="@{/Inicio.html}">Inicio</a> 
+                    <a class="nav-link text-white" th:href="@{/Carta.html}">Pedidos</a> 
                     <a class="nav-link text-white" th:href="@{/cart}">Carrito</a> 
-                    <a class="nav-link text-white" th:href="@{/reservas.html}">Reservas</a>
+                    <a  class="nav-link text-white"th:href="@{/reserva/form}">Reservar Mesa</a> 
                     <a class="nav-link text-white" th:href="@{/SobreNosotros.html}">Sobre Nosotros</a>
-                    <a class="nav-link text-white" th:href="@{/Eventos.html}">Eventos</a>
-                </div>
+                    <a class="nav-link text-white" th:href="@{/Eventos.html}">Eventos</a> 
+          </div>
 
                 <form th:action="@{/Carta.html}" method="get" class="d-flex">
                     <input type="text" name="searchTerm" class="form-control me-2" placeholder="Buscar..." aria-label="Buscar" th:value="${param.searchTerm}">

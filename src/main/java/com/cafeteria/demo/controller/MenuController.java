@@ -2,7 +2,7 @@
 package com.cafeteria.demo.controller; 
 
 import com.cafeteria.demo.model.Producto; 
-import com.cafeteria.demo.service.MenuService; 
+import com.cafeteria.demo.service.ProductoService; 
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model; 
@@ -15,10 +15,10 @@ import java.util.List;
 @RequestMapping("/") 
 public class MenuController {
 
-    private final MenuService menuService; // Inyectamos nuestro servicio
+    private final ProductoService menuService; // Inyectamos nuestro servicio
 
     // Inyección de dependencias a través del constructor
-    public MenuController(MenuService menuService) {
+    public MenuController(ProductoService menuService) {
         this.menuService = menuService;
     }
 

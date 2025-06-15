@@ -1,190 +1,211 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Reservar | Amor por el Café</title>
-  <!-- Bootstrap CSS -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.4/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-    integrity="sha384-DQvkBjpPgn7RC31MCQoOeC9TI2kdqa4+BSgNMNj8v77fdC77Kj5zpWFTJaaAoMbC"
-    crossorigin="anonymous"
-  >
-  <!-- Tu CSS personalizado -->
-  <link href="/css/Inicio1.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Reservar | Amor por el Café</title>
+    <!-- Bootstrap CSS -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.4/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        xintegrity="sha384-DQvkBjpPgn7RC31MCQoOeC9TI2kdqa4+BSgNMNj8v77fdC77Kj5zpWFTJaaAoMbC"
+        crossorigin="anonymous"
+    >
+    <!-- Tu CSS personalizado (usando th:href) -->
+    <link th:href="@{/css/Inicio1.css}" rel="stylesheet">
 </head>
 <body>
 
-  <!-- ========== NAVBAR ========== -->
-  <header class="text-white">
-    <nav class="navbar navbar-expand-sm navbar-dark">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="/">Amor por el Café</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNavAltMarkup"
-          aria-controls="navbarNavAltMarkup"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div
-          class="collapse navbar-collapse justify-content-between"
-          id="navbarNavAltMarkup"
-        >
-          <div class="navbar-nav">
-            <a class="nav-link text-white" href="/">Inicio</a>
-            <a class="nav-link text-white" href="/carta">Pedidos</a>
-            <a class="nav-link text-white" href="/cart">Carrito</a>
-            <a class="nav-link text-white" href="/reserva/form">Reservas</a>
-            <a class="nav-link text-white" href="/sobre-nosotros">Sobre Nosotros</a>
-            <a class="nav-link text-white" href="/eventos">Eventos</a>
-          </div>
-          <div class="d-flex gap-3">
-            <a href="/login" class="btn btn-light">Iniciar Sesión</a>
-            <a href="/registrar" class="btn btn-light">Registrar</a>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </header>
+    <!-- ========== NAVBAR ========== -->
+    <header class="text-white">
+        <nav class="navbar navbar-expand-sm navbar-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" th:href="@{/Inicio.html}">Amor por el Café</a> <!-- Ajustado a Inicio.html -->
+                <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavAltMarkup"
+                    aria-controls="navbarNavAltMarkup"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div
+                    class="collapse navbar-collapse justify-content-between"
+                    id="navbarNavAltMarkup"
+                >
+                    <div class="navbar-nav">
+                        <a class="nav-link text-white" th:href="@{/Inicio.html}">Inicio</a>
+                        <a class="nav-link text-white" th:href="@{/Carta.html}">Pedidos</a> <!-- Apunta a Carta.html -->
+                        <a class="nav-link text-white" th:href="@{/cart}">Carrito</a>
+                        <a class="nav-link text-white" th:href="@{/reserva/form}">Reservas</a> <!-- Correcto -->
+                        <a class="nav-link text-white" th:href="@{/SobreNosotros.html}">Sobre Nosotros</a> <!-- Apunta a SobreNosotros.html -->
+                        <a class="nav-link text-white" th:href="@{/Eventos.html}">Eventos</a> <!-- Apunta a Eventos.html -->
+                    </div>
+                    
+                    <!-- Botones a la derecha -->
+                    <div class="d-flex gap-3">
+                        <a th:href="@{/usuario/ingresar}" class="btn btn-light">Iniciar Sesión</a>
+                        <a th:href="@{/usuario/nuevousuario}" class="btn btn-light">Registrar</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
 
-  <!-- ========== CONTENIDO: FORMULARIO RESERVA ========== -->
-  <main class="container mt-5">
+    <!-- ========== CONTENIDO: FORMULARIO RESERVA ========== -->
+    <main class="container mt-5">
 
-    <h2 class="mb-4">Reservar una mesa</h2>
+        <h2 class="mb-4">Reservar una mesa</h2>
 
-    <!-- mensaje de éxito -->
-    <div th:if="${success}" class="alert alert-success">
-      ¡Tu reserva se ha guardado correctamente!
-    </div>
+        <!-- Mensajes de éxito/error (usando 'mensaje' y 'error' de RedirectAttributes) -->
+        <div th:if="${mensaje}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <p th:text="${mensaje}">¡Tu reserva se ha guardado correctamente!</p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <p th:text="${error}">¡Ha ocurrido un error al procesar tu reserva!</p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
 
-    <form th:action="@{/reserva/guardar}" method="post">
-      <div class="row g-3">
-        <div class="col-md-6">
-          <label for="usuarioId" class="form-label">Usuario ID</label>
-          <input
-            type="number"
-            id="usuarioId"
-            name="usuarioId"
-            class="form-control"
-            required
-          >
-        </div>
-        <div class="col-md-6">
-          <label for="mesaId" class="form-label">Mesa</label>
-          <select
-            id="mesaId"
-            name="mesaId"
-            class="form-select"
-            required
-          >
-            <option
-              th:each="mesa : ${mesas}"
-              th:value="${mesa.id}"
-              th:text="'Mesa ' + ${mesa.numeroMesa} + ' (capacidad: ' + ${mesa.capacidad} + ')'"
-            ></option>
-          </select>
-        </div>
-        <div class="col-md-6">
-          <label for="fechaHoraReserva" class="form-label">Fecha y Hora</label>
-          <input
-            type="datetime-local"
-            id="fechaHoraReserva"
-            name="fechaHoraReserva"
-            class="form-control"
-            required
-          >
-        </div>
-        <div class="col-md-3">
-          <label for="duracionMinutos" class="form-label">Duración (min)</label>
-          <input
-            type="number"
-            id="duracionMinutos"
-            name="duracionMinutos"
-            class="form-control"
-            required
-          >
-        </div>
-        <div class="col-md-3">
-          <label for="cantidadPersonas" class="form-label">Personas</label>
-          <input
-            type="number"
-            id="cantidadPersonas"
-            name="cantidadPersonas"
-            class="form-control"
-            required
-          >
-        </div>
-        <div class="col-12">
-          <label for="notas" class="form-label">Notas adicionales</label>
-          <textarea
-            id="notas"
-            name="notas"
-            class="form-control"
-            rows="3"
-          ></textarea>
-        </div>
-      </div>
+        <!-- th:object="${reserva}" es CRUCIAL para el binding de campos -->
+        <form th:action="@{/reserva/guardar}" th:object="${reserva}" method="post">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="usuarioId" class="form-label">Usuario ID (Temporal)</label>
+                    <!-- Usar th:field para binding bidireccional -->
+                    <input
+                        type="number"
+                        id="usuarioId"
+                        name="usuarioId"
+                        th:field="*{usuarioId}"
+                        class="form-control"
+                        placeholder="Introduce tu ID de usuario (temporal)"
+                        required
+                    >
+                    <small class="form-text text-muted">En una implementación real, este campo sería automático para el usuario logueado.</small>
+                </div>
+                <div class="col-md-6">
+                    <label for="mesaId" class="form-label">Mesa</label>
+                    <select
+                        id="mesaId"
+                        th:field="*{mesa}"     
+                        class="form-select"
+                        required
+                    >
+                        <option value="">Seleccione una mesa</option>
+                        <option
+                            th:each="mesaOpt : ${mesas}"
+                            th:value="${mesaOpt.id}"
+                            th:text="'Mesa ' + ${mesaOpt.numeroMesa} + ' (Capacidad: ' + ${mesaOpt.capacidad} + ')'"
+                            th:selected="${reserva.mesa != null and reserva.mesa.id == mesaOpt.id}"
+                        ></option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="fechaHoraReserva" class="form-label">Fecha y Hora</label>
+                    <!-- Formato para datetime-local y binding con th:field -->
+                    <input
+                        type="datetime-local"
+                        id="fechaHoraReserva"
+                        th:field="*{fechaHoraReserva}"
+                        class="form-control"
+                        th:value="${reserva.fechaHoraReserva != null ? #temporals.format(reserva.fechaHoraReserva, 'yyyy-MM-dd''T''HH:mm') : ''}"
+                        required
+                    >
+                </div>
+                <div class="col-md-3">
+                    <label for="duracionMinutos" class="form-label">Duración (min)</label>
+                    <input
+                        type="number"
+                        id="duracionMinutos"
+                        th:field="*{duracionMinutos}"
+                        class="form-control"
+                        required
+                        min="15"
+                        max="240"
+                        step="15"
+                    >
+                </div>
+                <div class="col-md-3">
+                    <label for="cantidadPersonas" class="form-label">Personas</label>
+                    <input
+                        type="number"
+                        id="cantidadPersonas"
+                        th:field="*{cantidadPersonas}"
+                        class="form-control"
+                        required
+                        min="1"
+                        max="10"
+                    >
+                </div>
+                <div class="col-12">
+                    <label for="notas" class="form-label">Notas adicionales</label>
+                    <textarea
+                        id="notas"
+                        th:field="*{notas}"
+                        class="form-control"
+                        rows="3"
+                    ></textarea>
+                </div>
+            </div>
 
-      <div class="mt-4">
-        <button type="submit" class="btn btn-success">Enviar Reserva</button>
-      </div>
-    </form>
+            <div class="mt-4">
+                <button type="submit" class="btn btn-success">Enviar Reserva</button>
+                <a th:href="@{/Inicio.html}" class="btn btn-secondary">Volver al Inicio</a>
+            </div>
+        </form>
 
-  </main>
+    </main>
 
-  <!-- ========== FOOTER ========== -->
-  <footer class="pt-5 pb-4">
-    <div class="container">
-      <div class="row g-4">
-        <!-- Sucursales -->
-        <div class="col-md-4">
-          <h5 class="mb-3"><i class="bi bi-geo-alt-fill me-1"></i> Nuestras sucursales</h5>
-          <nav class="nav flex-column">
-            <a class="nav-link px-0" href="#">Miraflores</a>
-            <a class="nav-link px-0" href="#">Barranco</a>
-            <a class="nav-link px-0" href="#">San Isidro</a>
-          </nav>
+    <!-- ========== FOOTER ========== -->
+    <footer class="pt-5 pb-4">
+        <div class="container">
+            <div class="row g-4">
+                <!-- Sucursales -->
+                <div class="col-md-4">
+                    <h5 class="mb-3"><i class="bi bi-geo-alt-fill me-1"></i> Nuestras sucursales</h5>
+                    <nav class="nav flex-column">
+                        <a class="nav-link px-0" href="#">Miraflores</a>
+                        <a class="nav-link px-0" href="#">Barranco</a>
+                        <a class="nav-link px-0" href="#">San Isidro</a>
+                    </nav>
+                </div>
+                <!-- Contacto -->
+                <div class="col-md-4">
+                    <h5 class="mb-3"><i class="bi bi-telephone-fill me-1"></i> Atención al cliente</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2">
+                            <i class="bi bi-phone me-1"></i>
+                            <a href="tel:+51112345678" class="text-decoration-underline">(01) 123 4567</a>
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-whatsapp me-1"></i>
+                            <a href="https://wa.me/51123456789" class="text-decoration-underline">WhatsApp</a>
+                        </li>
+                        <li>
+                            <i class="bi bi-envelope-fill me-1"></i>
+                            <a href="mailto:info@cafeymas.com" class="text-decoration-underline">info@cafeymas.com</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- Horarios -->
+                <div class="col-md-4">
+                    <h5 class="mb-3"><i class="bi bi-clock-fill me-1"></i> Horario de atención</h5>
+                    <p class="mb-1"><strong>Lun – Vie:</strong> 7:00 a.m. – 10:00 p.m.</p>
+                    <p class="mb-3"><strong>Sáb – Dom:</strong> 8:00 a.m. – 8:00 p.m.</p>
+                    <p class="small mb-0">© 2025 Café y Más SAC</p>
+                </div>
+            </div>
         </div>
-        <!-- Contacto -->
-        <div class="col-md-4">
-          <h5 class="mb-3"><i class="bi bi-telephone-fill me-1"></i> Atención al cliente</h5>
-          <ul class="list-unstyled mb-0">
-            <li class="mb-2">
-              <i class="bi bi-phone me-1"></i>
-              <a href="tel:+51112345678" class="text-decoration-underline">(01) 123 4567</a>
-            </li>
-            <li class="mb-2">
-              <i class="bi bi-whatsapp me-1"></i>
-              <a href="https://wa.me/51123456789" class="text-decoration-underline">WhatsApp</a>
-            </li>
-            <li>
-              <i class="bi bi-envelope-fill me-1"></i>
-              <a href="mailto:info@cafeymas.com" class="text-decoration-underline">info@cafeymas.com</a>
-            </li>
-          </ul>
-        </div>
-        <!-- Horarios -->
-        <div class="col-md-4">
-          <h5 class="mb-3"><i class="bi bi-clock-fill me-1"></i> Horario de atención</h5>
-          <p class="mb-1"><strong>Lun – Vie:</strong> 7:00 a.m. – 10:00 p.m.</p>
-          <p class="mb-3"><strong>Sáb – Dom:</strong> 8:00 a.m. – 8:00 p.m.</p>
-          <p class="small mb-0">© 2025 Café y Más SAC</p>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Bootstrap JS -->
-  <script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.4/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-YUe2LzesAfftltw+PEaao2tjU/QATaW/rOitAq67e0CT0Zi2VVRL0oC4+gAaeBKu"
-    crossorigin="anonymous"
-  ></script>
+    </footer>
+    <!-- Bootstrap JS -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.4/dist/js/bootstrap.bundle.min.js"
+        xintegrity="sha384-YUe2LzesAfftltw+PEaao2tjU/QATaW/rOitAq67e0CT0Zi2VVRL0oC4+gAaeBKu"
+        crossorigin="anonymous"
+    ></script>
 </body>
 </html>

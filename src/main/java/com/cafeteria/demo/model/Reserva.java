@@ -75,4 +75,3 @@ public class Reserva {
         return "Reserva #" + id + " [" + fechaHoraReserva + "] - Estado: " + estado;
     }
 }
-
