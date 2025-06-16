@@ -47,12 +47,6 @@ public class AdministradorController {
         return "admin";
     }
 
-    @PostMapping("/admin/reserva/eliminar")
-    public String eliminarReserva(@RequestParam Long id) {
-        reservaService.eliminarReserva(id);
-        return "redirect:/admin";
-    }
-
 
     @PostMapping("/admin/reserva/eliminar")
     public String eliminarReserva(@RequestParam Long id, RedirectAttributes redirectAttributes) {
